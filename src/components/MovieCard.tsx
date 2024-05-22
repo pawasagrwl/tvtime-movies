@@ -1,0 +1,46 @@
+import React from 'react';
+import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
+
+interface MovieCardProps {
+  name: string;
+  releaseDate: string;
+  runtime: number;
+  posterUrl?: string;
+  genres: string[];
+}
+
+const MovieCard: React.FC<MovieCardProps> = ({ name, releaseDate, runtime, posterUrl, genres }) => {
+  return (
+    <Card style={{ display: 'flex', marginBottom: '8px', backgroundColor: '#2A2A2A', color: '#FFFFFF' }}>
+      {posterUrl ? (
+        <CardMedia
+          component="img"
+          style={{ width: 100, height: 150, objectFit: 'cover' }}
+          image={posterUrl}
+          alt={name}
+        />
+      ) : (
+        <Box
+          style={{
+            width: 100,
+            height: 150,
+            backgroundColor: '#ccc',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h6" color="textSecondary">No Image</Typography>
+        </Box>
+      )}
+      <CardContent style={{ flex: '1 0 auto', padding: '8px 16px' }}>
+        <Typography variant="h6" style={{ fontWeight: 'bold' }}>{name}</Typography>
+        <Typography variant="body2" style={{ marginBottom: '4px' }}>Release Date: {releaseDate}</Typography>
+        <Typography variant="body2" style={{ marginBottom: '4px' }}>Runtime: {runtime} min</Typography>
+        <Typography variant="body2">Genres: {genres.join(', ')}</Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default MovieCard;
