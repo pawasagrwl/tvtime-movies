@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, CircularProgress, Typography } from '@mui/material';
 import MovieCard from './MovieCard';
+import data from '../data.json';
 
 interface Movie {
   uuid: string;
@@ -27,21 +28,14 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/data.json')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setMovies(data.data.objects);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    try {
+      const movieData = data.data.objects as Movie[];
+      setMovies(movieData);
+      setLoading(false);
+    } catch (error) {
+      setError('Failed to load data');
+      setLoading(false);
+    }
   }, []);
 
   if (loading) {
