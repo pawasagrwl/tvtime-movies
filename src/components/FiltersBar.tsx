@@ -1,22 +1,37 @@
-import React, { useState } from 'react';
-import { Box, TextField, MenuItem, Select, FormControl, InputLabel, Button } from '@mui/material';
-import { styled } from '@mui/system';
-import { FilterList, Sort, Search, Clear } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import React, { useState } from "react";
+import {
+  Box,
+  TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  IconButton,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import { FilterList, Sort, Clear } from "@mui/icons-material";
 
 interface FiltersBarProps {
-  onFilterChange: (filter: { genre?: string; year?: string; runtime?: string }) => void;
-  onSortChange: (sort: { criteria: string; order: 'asc' | 'desc' }) => void;
+  onFilterChange: (filter: {
+    genre?: string;
+    year?: string;
+    runtime?: string;
+  }) => void;
+  onSortChange: (sort: { criteria: string; order: "asc" | "desc" }) => void;
   onSearchChange: (searchTerm: string) => void;
 }
 
-const FiltersBar: React.FC<FiltersBarProps> = ({ onFilterChange, onSortChange, onSearchChange }) => {
-  const [genre, setGenre] = useState('');
-  const [year, setYear] = useState('');
-  const [runtime, setRuntime] = useState('');
-  const [sortCriteria, setSortCriteria] = useState('');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [searchTerm, setSearchTerm] = useState('');
+const FiltersBar: React.FC<FiltersBarProps> = ({
+  onFilterChange,
+  onSortChange,
+  onSearchChange,
+}) => {
+  const [genre, setGenre] = useState("");
+  const [year, setYear] = useState("");
+  const [runtime, setRuntime] = useState("");
+  const [sortCriteria, setSortCriteria] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleFilterChange = () => {
     onFilterChange({ genre, year, runtime });
@@ -32,44 +47,34 @@ const FiltersBar: React.FC<FiltersBarProps> = ({ onFilterChange, onSortChange, o
   };
 
   const handleResetFilters = () => {
-    setGenre('');
-    setYear('');
-    setRuntime('');
+    setGenre("");
+    setYear("");
+    setRuntime("");
     onFilterChange({});
   };
 
   const handleResetSorting = () => {
-    setSortCriteria('');
-    setSortOrder('asc');
-    onSortChange({ criteria: '', order: 'asc' });
+    setSortCriteria("");
+    setSortOrder("asc");
+    onSortChange({ criteria: "", order: "asc" });
   };
 
   const StyledBox = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     gap: theme.spacing(2),
     padding: theme.spacing(2),
-    backgroundColor: '#1C1C1C',
-    borderRadius: '8px',
+    backgroundColor: "#1C1C1C",
+    borderRadius: "8px",
     marginBottom: theme.spacing(2),
   }));
 
-  const StyledButton = styled(Button)(({ theme }) => ({
-    backgroundColor: '#3f51b5',
-    color: '#ffffff',
-    height: '56px',
-    width: '100%',
-    '&:hover': {
-      backgroundColor: '#303f9f',
-    },
+  const CompactTextField = styled(TextField)(({}) => ({
+    height: "56px",
   }));
 
-  const CompactTextField = styled(TextField)(({ theme }) => ({
-    height: '56px',
-  }));
-
-  const CompactSelect = styled(Select)(({ theme }) => ({
-    height: '56px',
+  const CompactSelect = styled(Select)(({}) => ({
+    height: "56px",
   }));
 
   return (
@@ -79,10 +84,12 @@ const FiltersBar: React.FC<FiltersBarProps> = ({ onFilterChange, onSortChange, o
           <InputLabel>Genre</InputLabel>
           <CompactSelect
             value={genre}
-            onChange={(e) => setGenre(e.target.value)}
+            onChange={(e) => setGenre(e.target.value as string)}
             label="Genre"
           >
-            <MenuItem value=""><em>None</em></MenuItem>
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
             <MenuItem value="Action">Action</MenuItem>
             <MenuItem value="Comedy">Comedy</MenuItem>
             <MenuItem value="Drama">Drama</MenuItem>
@@ -93,7 +100,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({ onFilterChange, onSortChange, o
           variant="outlined"
           label="Year"
           value={year}
-          onChange={(e) => setYear(e.target.value)}
+          onChange={(e) => setYear(e.target.value as string)}
           type="number"
           fullWidth
         />
@@ -101,7 +108,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({ onFilterChange, onSortChange, o
           variant="outlined"
           label="Runtime"
           value={runtime}
-          onChange={(e) => setRuntime(e.target.value)}
+          onChange={(e) => setRuntime(e.target.value as string)}
           fullWidth
         />
         <IconButton onClick={handleFilterChange} color="primary">
@@ -116,10 +123,12 @@ const FiltersBar: React.FC<FiltersBarProps> = ({ onFilterChange, onSortChange, o
           <InputLabel>Sort By</InputLabel>
           <CompactSelect
             value={sortCriteria}
-            onChange={(e) => setSortCriteria(e.target.value)}
+            onChange={(e) => setSortCriteria(e.target.value as string)}
             label="Sort By"
           >
-            <MenuItem value=""><em>None</em></MenuItem>
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
             <MenuItem value="name">Name</MenuItem>
             <MenuItem value="releaseDate">Release Date</MenuItem>
             <MenuItem value="runtime">Runtime</MenuItem>
@@ -129,7 +138,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({ onFilterChange, onSortChange, o
           <InputLabel>Order</InputLabel>
           <CompactSelect
             value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+            onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
             label="Order"
           >
             <MenuItem value="asc">Ascending</MenuItem>
@@ -151,7 +160,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({ onFilterChange, onSortChange, o
         fullWidth
         InputProps={{
           endAdornment: (
-            <IconButton onClick={() => setSearchTerm('')} color="secondary">
+            <IconButton onClick={() => setSearchTerm("")} color="secondary">
               <Clear />
             </IconButton>
           ),
