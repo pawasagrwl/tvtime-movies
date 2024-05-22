@@ -9,6 +9,12 @@ interface MovieCardProps {
   genres: string[];
 }
 
+const formatRuntime = (seconds: number): string => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  return `${hours}h ${minutes}m`;
+};
+
 const MovieCard: React.FC<MovieCardProps> = ({ name, releaseDate, runtime, posterUrl, genres }) => {
   return (
     <Card style={{ display: 'flex', marginBottom: '8px', backgroundColor: '#2A2A2A', color: '#FFFFFF' }}>
@@ -34,10 +40,35 @@ const MovieCard: React.FC<MovieCardProps> = ({ name, releaseDate, runtime, poste
         </Box>
       )}
       <CardContent style={{ flex: '1 0 auto', padding: '8px 16px' }}>
-        <Typography variant="h6" style={{ fontWeight: 'bold' }}>{name}</Typography>
+        <Typography
+          variant="h6"
+          style={{
+            fontWeight: 'bold',
+            whiteSpace: 'normal',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 2, // Limit to 2 lines
+          }}
+        >
+          {name}
+        </Typography>
         <Typography variant="body2" style={{ marginBottom: '4px' }}>Release Date: {releaseDate}</Typography>
-        <Typography variant="body2" style={{ marginBottom: '4px' }}>Runtime: {runtime} min</Typography>
-        <Typography variant="body2">Genres: {genres.join(', ')}</Typography>
+        <Typography variant="body2" style={{ marginBottom: '4px' }}>Runtime: {formatRuntime(runtime)}</Typography>
+        <Typography
+          variant="body2"
+          style={{
+            whiteSpace: 'normal',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 2, // Limit to 2 lines
+          }}
+        >
+          Genres: {genres.join(', ')}
+        </Typography>
       </CardContent>
     </Card>
   );
