@@ -2,28 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, CircularProgress, Typography } from "@mui/material";
 import MovieItem from "./MovieItem";
 import data from "../../../data.json";
-
-interface Movie {
-  uuid: string;
-  meta: {
-    name: string;
-    first_release_date: string;
-    runtime: number;
-    posters: { url: string }[];
-    genres: string[];
-    overview: string;
-    trailers?: { name: string; url: string; thumb_url: string }[];
-    is_released: boolean;
-  };
-  extended: {
-    is_watched: boolean;
-  };
-}
-
-interface MovieListProps {
-  filter: (movie: Movie) => boolean;
-  sort: { criteria: string; order: "asc" | "desc" };
-}
+import { Movie, MovieListProps } from "../../../types/types";
 
 const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -83,6 +62,8 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
             genres={movie.meta.genres}
             overview={movie.meta.overview}
             trailers={movie.meta.trailers}
+            meta={movie.meta}
+            extended={movie.extended}
           />
         </Grid>
       ))}

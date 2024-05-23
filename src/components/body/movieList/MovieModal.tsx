@@ -14,6 +14,7 @@ interface MovieModalProps {
   open: boolean;
   onClose: () => void;
   movie: {
+    uuid: string;
     name: string;
     releaseDate: string;
     runtime: number;
@@ -21,6 +22,8 @@ interface MovieModalProps {
     genres: string[];
     overview: string;
     trailers?: { name: string; url: string; thumb_url: string }[];
+    meta: any; // Ensure to type this properly based on the Movie type
+    extended: any; // Ensure to type this properly based on the Movie type
   };
 }
 
@@ -112,32 +115,30 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
             {movie.trailers.map((trailer, index) => (
               <Box
                 key={index}
-                sx={{ display: "flex", alignItems: "center", my: 1 }}
+                sx={{ display: "flex", flexDirection: "column", my: 1 }}
               >
                 <CardMedia
                   component="img"
                   image={trailer.thumb_url}
                   alt={trailer.name}
                   sx={{
-                    width: 120,
-                    height: 67,
+                    width: "100%",
+                    height: "auto",
                     objectFit: "cover",
-                    mr: 2,
                     borderRadius: 1,
+                    mb: 1,
                   }}
                 />
-                <Box>
-                  <Typography
-                    variant="subtitle1"
-                    component="a"
-                    href={trailer.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{ color: "#FFA500" }}
-                  >
-                    {trailer.name}
-                  </Typography>
-                </Box>
+                <Typography
+                  variant="subtitle1"
+                  component="a"
+                  href={trailer.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{ color: "#FFA500" }}
+                >
+                  {trailer.name}
+                </Typography>
               </Box>
             ))}
           </>

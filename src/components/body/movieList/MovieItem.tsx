@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardMedia, Typography, Box, IconButton } from "@mui/material";
-import LinkIcon from '@mui/icons-material/Link';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Box,
+  IconButton,
+} from "@mui/material";
+import LinkIcon from "@mui/icons-material/Link";
 import MovieModal from "./MovieModal";
 import { format, parseISO, isValid, differenceInDays } from "date-fns";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 interface MovieItemProps {
   uuid: string;
@@ -13,6 +21,8 @@ interface MovieItemProps {
   genres: string[];
   overview: string;
   trailers?: { name: string; url: string; thumb_url: string }[];
+  meta: any; // Ensure to type this properly based on the Movie type
+  extended: any; // Ensure to type this properly based on the Movie type
 }
 
 const formatRuntime = (seconds: number): string => {
@@ -24,7 +34,7 @@ const formatRuntime = (seconds: number): string => {
 const formatDate = (dateString: string): string => {
   const date = parseISO(dateString);
   if (isValid(date)) {
-    return format(date, "dd MMMM yyyy");
+    return format(date, "d MMM yyyy");
   } else {
     return "Invalid Date";
   }
@@ -39,6 +49,8 @@ const MovieItem: React.FC<MovieItemProps> = ({
   genres,
   overview,
   trailers,
+  meta,
+  extended,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -128,6 +140,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
                 textOverflow: "ellipsis", // Optional: Use if you want to indicate overflow with ellipsis
                 display: "block", // Ensure it behaves as a block element
                 color: "#ffdd57", // Custom color for the title
+                lineHeight: "1.2", // Adjust this value to decrease space between lines
               }}
             >
               {name}
@@ -148,24 +161,29 @@ const MovieItem: React.FC<MovieItemProps> = ({
               {genres.join(", ")}
             </Typography>
           </Box>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box display="flex" alignItems="center">
             <Typography variant="body2" style={{ marginBottom: "4px" }}>
               {formatRuntime(runtime)}
             </Typography>
+            <FiberManualRecordIcon sx={{ fontSize: 8, mx: 1 }} />
             {daysUntilRelease !== null && daysUntilRelease > 0 && (
-              <Typography
-                variant="body2"
-                style={{
-                  color: "#FFA500",
-                  marginBottom: "4px",
-                }}
-              >
-                {daysUntilRelease} days left
-              </Typography>
+              <>
+                <Typography
+                  variant="body2"
+                  style={{
+                    color: "#FFA500",
+                    marginBottom: "4px",
+                  }}
+                >
+                  {daysUntilRelease} days left
+                </Typography>
+                <FiberManualRecordIcon sx={{ fontSize: 8, mx: 1 }} />
+              </>
             )}
             <Typography variant="body2" style={{ marginBottom: "4px" }}>
               {releaseDateFormatted}
             </Typography>
+            <FiberManualRecordIcon sx={{ fontSize: 8, mx: 1 }} />
             <IconButton
               href={`https://app.tvtime.com/movie/${uuid}`}
               target="_blank"
@@ -183,6 +201,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
         open={open}
         onClose={handleClose}
         movie={{
+          uuid,
           name,
           releaseDate,
           runtime,
@@ -190,6 +209,8 @@ const MovieItem: React.FC<MovieItemProps> = ({
           genres,
           overview,
           trailers,
+          meta,
+          extended,
         }}
       />
     </>
