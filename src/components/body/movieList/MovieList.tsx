@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, CircularProgress, Typography } from '@mui/material';
-import MovieItem from './MovieItem';
-import data from '../../../data.json';
+import React, { useState, useEffect } from "react";
+import { Grid, CircularProgress, Typography } from "@mui/material";
+import MovieItem from "./MovieItem";
+import data from "../../../data.json";
 
 interface Movie {
   uuid: string;
@@ -22,7 +22,7 @@ interface Movie {
 
 interface MovieListProps {
   filter: (movie: Movie) => boolean;
-  sort: { criteria: string; order: 'asc' | 'desc' };
+  sort: { criteria: string; order: "asc" | "desc" };
 }
 
 const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
@@ -36,7 +36,7 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
       setMovies(movieData);
       setLoading(false);
     } catch (error) {
-      setError('Failed to load data');
+      setError("Failed to load data");
       setLoading(false);
     }
   }, []);
@@ -52,12 +52,20 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
   const filteredMovies = movies.filter((movie) => filter(movie));
 
   const sortedMovies = filteredMovies.sort((a, b) => {
-    if (sort.criteria === 'name') {
-      return sort.order === 'asc' ? a.meta.name.localeCompare(b.meta.name) : b.meta.name.localeCompare(a.meta.name);
-    } else if (sort.criteria === 'releaseDate') {
-      return sort.order === 'asc' ? new Date(a.meta.first_release_date).getTime() - new Date(b.meta.first_release_date).getTime() : new Date(b.meta.first_release_date).getTime() - new Date(a.meta.first_release_date).getTime();
-    } else if (sort.criteria === 'runtime') {
-      return sort.order === 'asc' ? a.meta.runtime - b.meta.runtime : b.meta.runtime - a.meta.runtime;
+    if (sort.criteria === "name") {
+      return sort.order === "asc"
+        ? a.meta.name.localeCompare(b.meta.name)
+        : b.meta.name.localeCompare(a.meta.name);
+    } else if (sort.criteria === "releaseDate") {
+      return sort.order === "asc"
+        ? new Date(a.meta.first_release_date).getTime() -
+            new Date(b.meta.first_release_date).getTime()
+        : new Date(b.meta.first_release_date).getTime() -
+            new Date(a.meta.first_release_date).getTime();
+    } else if (sort.criteria === "runtime") {
+      return sort.order === "asc"
+        ? a.meta.runtime - b.meta.runtime
+        : b.meta.runtime - a.meta.runtime;
     }
     return 0;
   });
@@ -67,6 +75,7 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
       {sortedMovies.map((movie) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={movie.uuid}>
           <MovieItem
+            uuid={movie.uuid}
             name={movie.meta.name}
             releaseDate={movie.meta.first_release_date}
             runtime={movie.meta.runtime}

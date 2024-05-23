@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardMedia, Typography, Box } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Box, IconButton } from "@mui/material";
+import LinkIcon from '@mui/icons-material/Link';
 import MovieModal from "./MovieModal";
 import { format, parseISO, isValid, differenceInDays } from "date-fns";
 
 interface MovieItemProps {
+  uuid: string;
   name: string;
   releaseDate: string;
   runtime: number;
@@ -29,6 +31,7 @@ const formatDate = (dateString: string): string => {
 };
 
 const MovieItem: React.FC<MovieItemProps> = ({
+  uuid,
   name,
   releaseDate,
   runtime,
@@ -112,6 +115,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
             justifyContent: "space-between",
             overflow: "hidden",
             maxWidth: "calc(100% - 100px)", // Adjust based on CardMedia width
+            position: "relative", // Ensure relative positioning for the link button
           }}
         >
           <Box>
@@ -144,7 +148,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
               {genres.join(", ")}
             </Typography>
           </Box>
-          <Box display="flex" justifyContent="space-between">
+          <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="body2" style={{ marginBottom: "4px" }}>
               {formatRuntime(runtime)}
             </Typography>
@@ -162,6 +166,15 @@ const MovieItem: React.FC<MovieItemProps> = ({
             <Typography variant="body2" style={{ marginBottom: "4px" }}>
               {releaseDateFormatted}
             </Typography>
+            <IconButton
+              href={`https://app.tvtime.com/movie/${uuid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ color: "#FFA500", ml: 2 }}
+              onClick={(e) => e.stopPropagation()} // Prevent opening the modal on click
+            >
+              <LinkIcon />
+            </IconButton>
           </Box>
         </CardContent>
       </Card>
