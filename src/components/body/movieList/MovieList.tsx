@@ -11,6 +11,8 @@ interface Movie {
     runtime: number;
     posters: { url: string }[];
     genres: string[];
+    overview: string;
+    trailers?: { name: string; url: string; thumb_url: string }[];
   };
   extended: {
     is_watched: boolean;
@@ -75,6 +77,8 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
             runtime={movie.meta.runtime}
             posterUrl={movie.meta.posters[0]?.url}
             genres={movie.meta.genres}
+            overview={movie.meta.overview}
+            trailers={movie.meta.trailers}
           />
         </Grid>
       ))}
