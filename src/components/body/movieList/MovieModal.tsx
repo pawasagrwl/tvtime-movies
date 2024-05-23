@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Box, Typography, IconButton, CardMedia, Divider } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { format, parseISO, isValid } from "date-fns";
 
 interface MovieModalProps {
   open: boolean;
@@ -22,6 +23,15 @@ const formatRuntime = (seconds: number): string => {
   return `${hours}h ${minutes}m`;
 };
 
+const formatDate = (dateString: string): string => {
+  const date = parseISO(dateString);
+  if (isValid(date)) {
+    return format(date, "dd MMMM yyyy");
+  } else {
+    return "Invalid Date";
+  }
+};
+
 const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
   return (
     <Modal open={open} onClose={onClose}>
@@ -31,12 +41,21 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          bgcolor: 'background.paper',
+          bgcolor: '#1c1c1c',
+          color: '#ffffff',
           boxShadow: 24,
           p: 4,
-          maxWidth: 600,
-          width: '90%',
+          maxWidth: '90%',
+          maxHeight: '90%',
           borderRadius: 2,
+          overflow: 'auto',
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#444',
+            borderRadius: '4px',
+          },
         }}
       >
         <IconButton
@@ -46,38 +65,28 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
             position: 'absolute',
             right: 8,
             top: 8,
-            color: (theme) => theme.palette.grey[500],
+            color: '#fff',
           }}
         >
           <CloseIcon />
         </IconButton>
-        {movie.posterUrl ? (
+        {movie.posterUrl && (
           <CardMedia
             component="img"
             image={movie.posterUrl}
             alt={movie.name}
-            sx={{ width: '100%', height: 300, objectFit: 'cover', mb: 2 }}
+            sx={{ width: '100%', height: 300, objectFit: 'cover', mb: 2, borderRadius: 1 }}
           />
-        ) : null}
-        <Typography variant="h4" component="h2" gutterBottom>
+        )}
+        <Typography variant="h4" component="h2" gutterBottom sx={{ color: '#ffdd57' }}>
           {movie.name}
         </Typography>
-        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-          Release Date: {movie.releaseDate}
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-          Runtime: {formatRuntime(movie.runtime)}
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-          Genres: {movie.genres.join(', ')}
-        </Typography>
-        <Divider sx={{ my: 2 }} />
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1" gutterBottom sx={{ color: '#a0a0a0' }}>
           {movie.overview}
         </Typography>
         {movie.trailers && movie.trailers.length > 0 && (
           <>
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 2, borderColor: '#444' }} />
             <Typography variant="h6" gutterBottom>
               Trailers
             </Typography>
@@ -87,10 +96,17 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
                   component="img"
                   image={trailer.thumb_url}
                   alt={trailer.name}
-                  sx={{ width: 120, height: 67, objectFit: 'cover', mr: 2 }}
+                  sx={{ width: 120, height: 67, objectFit: 'cover', mr: 2, borderRadius: 1 }}
                 />
                 <Box>
-                  <Typography variant="subtitle1" component="a" href={trailer.url} target="_blank" rel="noopener noreferrer" color="primary">
+                  <Typography
+                    variant="subtitle1"
+                    component="a"
+                    href={trailer.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{ color: '#FFA500' }}
+                  >
                     {trailer.name}
                   </Typography>
                 </Box>
@@ -98,6 +114,16 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
             ))}
           </>
         )}
+        <Divider sx={{ my: 2, borderColor: '#444' }} />
+        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+          Release Date: {formatDate(movie.releaseDate)}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+          Runtime: {formatRuntime(movie.runtime)}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+          Genres: {movie.genres.join(', ')}
+        </Typography>
       </Box>
     </Modal>
   );
