@@ -55,7 +55,7 @@ const Footer: React.FC = () => {
             style={{ display: "flex", alignItems: "center", gap: "4px" }}
           >
             <CopyrightIcon style={{ fontSize: "inherit" }} />
-            2024 Pawas Aggarwal
+            2024
           </Typography>
         </Grid>
       </Grid>
