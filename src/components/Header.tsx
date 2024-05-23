@@ -1,31 +1,42 @@
-import React from 'react';
-import { AppBar, Tabs, Tab, Toolbar, Typography, Box } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
+import TvIcon from "@mui/icons-material/Tv";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
-const Header: React.FC = () => {
-  const location = useLocation();
-  const currentTab = location.pathname;
+interface HeaderProps {
+  toggleTheme: () => void;
+  darkMode: boolean;
+}
 
+const Header: React.FC<HeaderProps> = ({ toggleTheme, darkMode }) => {
   return (
-    <AppBar position="sticky" style={{ backgroundColor: '#1C1C1C', boxShadow: 'none' }}>
+    <AppBar position="static">
       <Toolbar>
-        <Box display="flex" justifyContent="center" width="100%">
-          <Typography variant="h6" style={{ color: '#FFFFFF', fontFamily: 'Cursive', fontSize: '1.5rem', fontWeight: 'bold' }}>
-            TV Time Movies
-          </Typography>
-        </Box>
+        <IconButton edge="start" color="inherit" aria-label="tv-icon">
+          <TvIcon />
+        </IconButton>
+        <Typography
+          variant="h4"
+          style={{
+            flexGrow: 1,
+            textAlign: "center",
+            fontFamily: "Roboto, sans-serif",
+            fontWeight: "bold",
+            fontSize: "1.5rem",
+          }}
+        >
+          TV Time Movies
+        </Typography>
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="toggle-theme"
+          onClick={toggleTheme}
+        >
+          {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
       </Toolbar>
-      <Tabs
-        value={currentTab}
-        indicatorColor="primary"
-        textColor="inherit"
-        variant="fullWidth"
-        style={{ backgroundColor: '#333333' }}
-      >
-        <Tab label="Watchlist" value="/watchlist" component={Link} to="/watchlist" style={{ color: '#FFFFFF' }} />
-        <Tab label="Upcoming" value="/upcoming" component={Link} to="/upcoming" style={{ color: '#FFFFFF' }} />
-        <Tab label="Watched" value="/watched" component={Link} to="/watched" style={{ color: '#FFFFFF' }} />
-      </Tabs>
     </AppBar>
   );
 };

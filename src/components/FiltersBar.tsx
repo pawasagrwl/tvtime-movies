@@ -1,23 +1,12 @@
-import React, { useState } from "react";
-import {
-  Box,
-  TextField,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  IconButton,
-} from "@mui/material";
-import { styled } from "@mui/system";
-import { FilterList, Sort, Clear } from "@mui/icons-material";
+import React, { useState } from 'react';
+import { Box, TextField, IconButton, InputAdornment } from '@mui/material';
+import { styled } from '@mui/system';
+import { FilterList, Clear } from '@mui/icons-material';
+import FiltersModal from './FiltersModal';
 
 interface FiltersBarProps {
-  onFilterChange: (filter: {
-    genre?: string;
-    year?: string;
-    runtime?: string;
-  }) => void;
-  onSortChange: (sort: { criteria: string; order: "asc" | "desc" }) => void;
+  onFilterChange: (filter: { genre?: string; year?: string; runtime?: string }) => void;
+  onSortChange: (sort: { criteria: string; order: 'asc' | 'desc' }) => void;
   onSearchChange: (searchTerm: string) => void;
 }
 
@@ -26,147 +15,68 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
   onSortChange,
   onSearchChange,
 }) => {
-  const [genre, setGenre] = useState("");
-  const [year, setYear] = useState("");
-  const [runtime, setRuntime] = useState("");
-  const [sortCriteria, setSortCriteria] = useState("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleFilterChange = () => {
-    onFilterChange({ genre, year, runtime });
-  };
-
-  const handleSortChange = () => {
-    onSortChange({ criteria: sortCriteria, order: sortOrder });
-  };
+  const [searchTerm, setSearchTerm] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     onSearchChange(event.target.value);
   };
 
-  const handleResetFilters = () => {
-    setGenre("");
-    setYear("");
-    setRuntime("");
+  const handleReset = () => {
+    setSearchTerm('');
     onFilterChange({});
+    onSortChange({ criteria: '', order: 'asc' });
+    onSearchChange('');
   };
 
-  const handleResetSorting = () => {
-    setSortCriteria("");
-    setSortOrder("asc");
-    onSortChange({ criteria: "", order: "asc" });
+  const handleSave = (filter: { genre?: string; year?: string; runtime?: string }, sort: { criteria: string; order: 'asc' | 'desc' }) => {
+    onFilterChange(filter);
+    onSortChange(sort);
   };
 
-  const StyledBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    gap: theme.spacing(2),
-    padding: theme.spacing(2),
-    backgroundColor: "#1C1C1C",
-    borderRadius: "8px",
-    marginBottom: theme.spacing(2),
-  }));
-
-  const CompactTextField = styled(TextField)(({}) => ({
-    height: "56px",
-  }));
-
-  const CompactSelect = styled(Select)(({}) => ({
-    height: "56px",
+  const CompactTextField = styled(TextField)(({ theme }) => ({
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '20px',
+      backgroundColor: theme.palette.background.paper,
+    },
+    '& .MuiOutlinedInput-input': {
+      padding: '10px 14px',
+    },
+    '& .MuiInputAdornment-positionEnd': {
+      marginRight: '4px', // Adjust margin to position the icon correctly
+    },
   }));
 
   return (
-    <StyledBox>
-      <Box display="flex" gap={2}>
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel>Genre</InputLabel>
-          <CompactSelect
-            value={genre}
-            onChange={(e) => setGenre(e.target.value as string)}
-            label="Genre"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="Action">Action</MenuItem>
-            <MenuItem value="Comedy">Comedy</MenuItem>
-            <MenuItem value="Drama">Drama</MenuItem>
-            <MenuItem value="Science Fiction">Science Fiction</MenuItem>
-          </CompactSelect>
-        </FormControl>
+    <>
+      <Box display="flex" alignItems="center" gap={2} padding={2}>
         <CompactTextField
           variant="outlined"
-          label="Year"
-          value={year}
-          onChange={(e) => setYear(e.target.value as string)}
-          type="number"
+          placeholder="Search"
+          value={searchTerm}
+          onChange={handleSearchChange}
           fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setSearchTerm('')} color="secondary">
+                  <Clear />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
-        <CompactTextField
-          variant="outlined"
-          label="Runtime"
-          value={runtime}
-          onChange={(e) => setRuntime(e.target.value as string)}
-          fullWidth
-        />
-        <IconButton onClick={handleFilterChange} color="primary">
+        <IconButton onClick={() => setOpen(true)} color="primary">
           <FilterList />
         </IconButton>
-        <IconButton onClick={handleResetFilters} color="secondary">
+        <IconButton onClick={handleReset} color="secondary">
           <Clear />
         </IconButton>
       </Box>
-      <Box display="flex" gap={2}>
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel>Sort By</InputLabel>
-          <CompactSelect
-            value={sortCriteria}
-            onChange={(e) => setSortCriteria(e.target.value as string)}
-            label="Sort By"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="releaseDate">Release Date</MenuItem>
-            <MenuItem value="runtime">Runtime</MenuItem>
-          </CompactSelect>
-        </FormControl>
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel>Order</InputLabel>
-          <CompactSelect
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-            label="Order"
-          >
-            <MenuItem value="asc">Ascending</MenuItem>
-            <MenuItem value="desc">Descending</MenuItem>
-          </CompactSelect>
-        </FormControl>
-        <IconButton onClick={handleSortChange} color="primary">
-          <Sort />
-        </IconButton>
-        <IconButton onClick={handleResetSorting} color="secondary">
-          <Clear />
-        </IconButton>
-      </Box>
-      <CompactTextField
-        variant="outlined"
-        label="Search"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        fullWidth
-        InputProps={{
-          endAdornment: (
-            <IconButton onClick={() => setSearchTerm("")} color="secondary">
-              <Clear />
-            </IconButton>
-          ),
-        }}
-      />
-    </StyledBox>
+
+      <FiltersModal open={open} onClose={() => setOpen(false)} onSave={handleSave} />
+    </>
   );
 };
 
