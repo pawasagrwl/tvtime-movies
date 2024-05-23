@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ toggleTheme, darkMode }) => {
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="tv-icon">
           <TvIcon />
