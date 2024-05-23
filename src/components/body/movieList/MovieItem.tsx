@@ -9,36 +9,9 @@ import {
 } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import MovieModal from "./MovieModal";
-import { format, parseISO, isValid, differenceInDays } from "date-fns";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-
-interface MovieItemProps {
-  uuid: string;
-  name: string;
-  releaseDate: string;
-  runtime: number;
-  posterUrl?: string;
-  genres: string[];
-  overview: string;
-  trailers?: { name: string; url: string; thumb_url: string }[];
-  meta: any; // Ensure to type this properly based on the Movie type
-  extended: any; // Ensure to type this properly based on the Movie type
-}
-
-const formatRuntime = (seconds: number): string => {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  return `${hours}h ${minutes}m`;
-};
-
-const formatDate = (dateString: string): string => {
-  const date = parseISO(dateString);
-  if (isValid(date)) {
-    return format(date, "d MMM yyyy");
-  } else {
-    return "Invalid Date";
-  }
-};
+import { MovieItemProps } from "../../../types/types";
+import { formatDate, formatRuntime, formatReleaseDays } from "../../../utils/format";
 
 const MovieItem: React.FC<MovieItemProps> = ({
   uuid,
@@ -58,9 +31,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
   const handleClose = () => setOpen(false);
 
   const releaseDateFormatted = formatDate(releaseDate);
-  const daysUntilRelease = isValid(parseISO(releaseDate))
-    ? differenceInDays(new Date(releaseDate), new Date())
-    : null;
+  const daysUntilRelease = formatReleaseDays(releaseDate)
 
   return (
     <>

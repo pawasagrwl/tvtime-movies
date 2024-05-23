@@ -42,9 +42,37 @@ export interface Movie {
   };
 }
 
-
 export interface MovieListProps {
   filter: (movie: Movie) => boolean;
   sort: { criteria: string; order: "asc" | "desc" };
 }
 
+export interface MovieItemProps {
+  uuid: string;
+  name: string;
+  releaseDate: string;
+  runtime: number;
+  posterUrl?: string;
+  genres: string[];
+  overview: string;
+  trailers?: { name: string; url: string; thumb_url: string }[];
+  meta: any; // Ensure to type this properly based on the Movie type
+  extended: any; // Ensure to type this properly based on the Movie type
+}
+
+export interface MovieModalProps {
+  open: boolean;
+  onClose: () => void;
+  movie: {
+    uuid: string;
+    name: string;
+    releaseDate: string;
+    runtime: number;
+    posterUrl?: string;
+    genres: string[];
+    overview: string;
+    trailers?: { name: string; url: string; thumb_url: string }[];
+    meta: any; // Ensure to type this properly based on the Movie type
+    extended: any; // Ensure to type this properly based on the Movie type
+  };
+}

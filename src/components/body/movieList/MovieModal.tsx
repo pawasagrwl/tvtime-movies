@@ -8,39 +8,8 @@ import {
   Divider,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { format, parseISO, isValid } from "date-fns";
-
-interface MovieModalProps {
-  open: boolean;
-  onClose: () => void;
-  movie: {
-    uuid: string;
-    name: string;
-    releaseDate: string;
-    runtime: number;
-    posterUrl?: string;
-    genres: string[];
-    overview: string;
-    trailers?: { name: string; url: string; thumb_url: string }[];
-    meta: any; // Ensure to type this properly based on the Movie type
-    extended: any; // Ensure to type this properly based on the Movie type
-  };
-}
-
-const formatRuntime = (seconds: number): string => {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  return `${hours}h ${minutes}m`;
-};
-
-const formatDate = (dateString: string): string => {
-  const date = parseISO(dateString);
-  if (isValid(date)) {
-    return format(date, "dd MMMM yyyy");
-  } else {
-    return "Invalid Date";
-  }
-};
+import { MovieModalProps } from "../../../types/types";
+import { formatDate, formatRuntime } from "../../../utils/format";
 
 const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
   return (
