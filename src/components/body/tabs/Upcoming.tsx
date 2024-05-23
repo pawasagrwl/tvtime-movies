@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import MovieList from "../components/MovieList";
-import FiltersBar from "../components/FiltersBar";
+import MovieList from "../movieList/MovieList";
+import FiltersBar from "../FiltersBar";
 
 const Upcoming: React.FC = () => {
   const [filters, setFilters] = useState<{

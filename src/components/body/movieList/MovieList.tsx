@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, CircularProgress, Typography } from '@mui/material';
 import MovieCard from './MovieCard';
-import data from '../data.json';
+import data from '../../../data.json';
 
 interface Movie {
   uuid: string;

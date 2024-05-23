@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import MovieList from "../components/MovieList";
-import FiltersBar from "../components/FiltersBar";
+import MovieList from "../movieList/MovieList";
+import FiltersBar from "../FiltersBar";
 
-const Watchlist: React.FC = () => {
+const Watched: React.FC = () => {
   const [filters, setFilters] = useState<{
     genre?: string;
     year?: string;
@@ -35,9 +35,7 @@ const Watchlist: React.FC = () => {
       />
       <MovieList
         filter={(movie) => {
-          const isWatchlist =
-            !movie.extended.is_watched &&
-            new Date(movie.meta.first_release_date) < new Date();
+          const isWatched = movie.extended.is_watched;
           const matchesGenre =
             !filters.genre || movie.meta.genres.includes(filters.genre);
           const matchesYear =
@@ -51,7 +49,7 @@ const Watchlist: React.FC = () => {
             !searchTerm ||
             movie.meta.name.toLowerCase().includes(searchTerm.toLowerCase());
           return (
-            isWatchlist &&
+            isWatched &&
             matchesGenre &&
             matchesYear &&
             matchesRuntime &&
@@ -64,4 +62,4 @@ const Watchlist: React.FC = () => {
   );
 };
 
-export default Watchlist;
+export default Watched;

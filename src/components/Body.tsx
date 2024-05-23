@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import NavigationTabs from './NavigationTabs';
-import Watchlist from '../pages/Watchlist';
-import Upcoming from '../pages/Upcoming';
-import Watched from '../pages/Watched';
+import NavigationTabs from './body/NavigationTabs';
+import Watchlist from './body/tabs/Watchlist';
+import Upcoming from './body/tabs/Upcoming';
+import Watched from './body/tabs/Watched';
 
 const Body: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('watchlist');
