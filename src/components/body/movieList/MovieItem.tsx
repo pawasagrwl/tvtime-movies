@@ -150,7 +150,16 @@ const MovieItem: React.FC<MovieItemProps> = ({
                     marginBottom: "4px",
                   }}
                 >
-                  {daysUntilRelease} days left
+                  {daysUntilRelease}
+                  <Typography
+                    variant="caption"
+                    style={{
+                      color: "#FFA500",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    {" "} days
+                  </Typography>
                 </Typography>
                 <FiberManualRecordIcon sx={{ fontSize: 8, mx: 1 }} />
               </>

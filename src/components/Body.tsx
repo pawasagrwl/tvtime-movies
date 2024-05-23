@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Fab } from "@mui/material";
 import NavigationTabs from "./body/NavigationTabs";
 import FiltersBar from "./body/FiltersBar";
 import MovieList from "./body/movieList/MovieList";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import data from "../data.json";
 
 const Body: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("watchlist");
@@ -16,6 +17,33 @@ const Body: React.FC = () => {
     { criteria: "", order: "asc" }
   );
   const [searchTerm, setSearchTerm] = useState("");
+  const [movieCounts, setMovieCounts] = useState<{
+    watchlist: number;
+    upcoming: number;
+    watched: number;
+  }>({ watchlist: 0, upcoming: 0, watched: 0 });
+
+  useEffect(() => {
+    const movieData = data.data.objects;
+    const watchlistCount = movieData.filter(
+      (movie: any) =>
+        !movie.extended.is_watched &&
+        movie.meta.is_released &&
+        movie.meta.runtime > 0
+    ).length;
+    const upcomingCount = movieData.filter(
+      (movie: any) => !movie.meta.is_released || movie.meta.runtime === 0
+    ).length;
+    const watchedCount = movieData.filter(
+      (movie: any) => movie.extended.is_watched
+    ).length;
+
+    setMovieCounts({
+      watchlist: watchlistCount,
+      upcoming: upcomingCount,
+      watched: watchedCount,
+    });
+  }, []);
 
   const handleFilterChange = (filter: {
     genre?: string[];
@@ -38,10 +66,14 @@ const Body: React.FC = () => {
 
   const filterMovies = (movie: any) => {
     if (activeTab === "watchlist") {
-      return !movie.extended.is_watched && movie.meta.is_released;
+      return (
+        !movie.extended.is_watched &&
+        movie.meta.is_released &&
+        movie.meta.runtime > 0
+      );
     }
     if (activeTab === "upcoming") {
-      return !movie.meta.is_released;
+      return !movie.meta.is_released || movie.meta.runtime === 0;
     }
     if (activeTab === "watched") {
       return movie.extended.is_watched;
@@ -58,7 +90,11 @@ const Body: React.FC = () => {
 
   return (
     <div>
-      <NavigationTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      <NavigationTabs
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        movieCounts={movieCounts}
+      />
       <Box mt={2}>
         <FiltersBar
           onFilterChange={handleFilterChange}
