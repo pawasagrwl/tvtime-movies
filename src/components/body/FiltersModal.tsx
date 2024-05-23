@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Modal,
@@ -6,47 +6,61 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  TextField,
   Button,
   Typography,
-} from '@mui/material';
-import { styled } from '@mui/system';
+  Slider,
+  TextField,
+} from "@mui/material";
+import { Autocomplete } from "@mui/lab";
+import { styled } from "@mui/system";
 
 interface FiltersModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (filter: { genre?: string; year?: string; runtime?: string }, sort: { criteria: string; order: 'asc' | 'desc' }) => void;
+  onSave: (
+    filter: { genre?: string[]; year?: number[]; runtime?: number[] },
+    sort: { criteria: string; order: "asc" | "desc" }
+  ) => void;
 }
 
-const FiltersModal: React.FC<FiltersModalProps> = ({ open, onClose, onSave }) => {
-  const [genre, setGenre] = useState('');
-  const [year, setYear] = useState('');
-  const [runtime, setRuntime] = useState('');
-  const [sortCriteria, setSortCriteria] = useState('');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+const FiltersModal: React.FC<FiltersModalProps> = ({
+  open,
+  onClose,
+  onSave,
+}) => {
+  const [genre, setGenre] = useState<string[]>([]);
+  const [year, setYear] = useState<number[]>([1900, new Date().getFullYear()]);
+  const [runtime, setRuntime] = useState<number[]>([0, 360]);
+  const [sortCriteria, setSortCriteria] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const handleSave = () => {
-    onSave({ genre, year, runtime }, { criteria: sortCriteria, order: sortOrder });
+    onSave(
+      { genre, year, runtime },
+      { criteria: sortCriteria, order: sortOrder }
+    );
     onClose();
   };
 
+  const genresOptions = ["Action", "Comedy", "Drama", "Science Fiction"];
+
   const CompactTextField = styled(TextField)(({ theme }) => ({
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '8px',
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "8px",
       backgroundColor: theme.palette.background.paper,
     },
-    '& .MuiOutlinedInput-input': {
-      padding: '10px 14px',
+    "& .MuiOutlinedInput-input": {
+      padding: "10px 14px",
     },
   }));
 
   const CompactSelect = styled(Select)(({ theme }) => ({
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '8px',
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "8px",
       backgroundColor: theme.palette.background.paper,
     },
-    '& .MuiOutlinedInput-input': {
-      padding: '10px 14px',
+    "& .MuiOutlinedInput-input": {
+      padding: "10px 14px",
     },
   }));
 
@@ -64,37 +78,41 @@ const FiltersModal: React.FC<FiltersModalProps> = ({ open, onClose, onSave }) =>
         margin="auto"
         mt={5}
       >
-        <Typography variant="h6" align="center">Filter and Sort</Typography>
+        <Typography variant="h6" align="center">
+          Filter and Sort
+        </Typography>
         <FormControl variant="outlined" fullWidth>
-          <InputLabel>Genre</InputLabel>
-          <CompactSelect
+          <Autocomplete
+            multiple
+            options={genresOptions}
             value={genre}
-            onChange={(e) => setGenre(e.target.value as string)}
-            label="Genre"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="Action">Action</MenuItem>
-            <MenuItem value="Comedy">Comedy</MenuItem>
-            <MenuItem value="Drama">Drama</MenuItem>
-            <MenuItem value="Science Fiction">Science Fiction</MenuItem>
-          </CompactSelect>
+            onChange={(event, newValue) => setGenre(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Genre"
+                placeholder="Select genres"
+              />
+            )}
+          />
         </FormControl>
-        <CompactTextField
-          variant="outlined"
-          label="Year"
+        <Typography variant="body1">Year Range</Typography>
+        <Slider
           value={year}
-          onChange={(e) => setYear(e.target.value as string)}
-          type="number"
-          fullWidth
+          onChange={(event, newValue) => setYear(newValue as number[])}
+          valueLabelDisplay="auto"
+          min={1900}
+          max={new Date().getFullYear()}
         />
-        <CompactTextField
-          variant="outlined"
-          label="Runtime"
+        <Typography variant="body1">Runtime Range (minutes)</Typography>
+        <Slider
           value={runtime}
-          onChange={(e) => setRuntime(e.target.value as string)}
-          fullWidth
+          onChange={(event, newValue) => setRuntime(newValue as number[])}
+          valueLabelDisplay="auto"
+          min={0}
+          max={360}
+          step={15}
         />
         <FormControl variant="outlined" fullWidth>
           <InputLabel>Sort By</InputLabel>
@@ -115,7 +133,7 @@ const FiltersModal: React.FC<FiltersModalProps> = ({ open, onClose, onSave }) =>
           <InputLabel>Order</InputLabel>
           <CompactSelect
             value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+            onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
             label="Order"
           >
             <MenuItem value="asc">Ascending</MenuItem>

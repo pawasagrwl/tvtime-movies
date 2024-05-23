@@ -5,7 +5,7 @@ import { FilterList, Clear } from '@mui/icons-material';
 import FiltersModal from './FiltersModal';
 
 interface FiltersBarProps {
-  onFilterChange: (filter: { genre?: string; year?: string; runtime?: string }) => void;
+  onFilterChange: (filter: { genre?: string[]; year?: number[]; runtime?: number[] }) => void;
   onSortChange: (sort: { criteria: string; order: 'asc' | 'desc' }) => void;
   onSearchChange: (searchTerm: string) => void;
 }
@@ -30,7 +30,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
     onSearchChange('');
   };
 
-  const handleSave = (filter: { genre?: string; year?: string; runtime?: string }, sort: { criteria: string; order: 'asc' | 'desc' }) => {
+  const handleSave = (filter: { genre?: string[]; year?: number[]; runtime?: number[] }, sort: { criteria: string; order: 'asc' | 'desc' }) => {
     onFilterChange(filter);
     onSortChange(sort);
   };
@@ -50,7 +50,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
 
   return (
     <>
-      <Box display="flex" alignItems="center" gap={2} padding={2}>
+      <Box display="flex" alignItems="center" gap={1} padding={1}>
         <CompactTextField
           variant="outlined"
           placeholder="Search"

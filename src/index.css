@@ -41,9 +41,9 @@ header, footer {
 }
 
 .container {
-  padding-top: 16px;
+  padding-top: 0px;
 }
 
 .movie-list {
-  margin: 0 16px;
+  margin: 1 16px;
 }

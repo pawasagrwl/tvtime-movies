@@ -13,6 +13,7 @@ interface Movie {
     genres: string[];
     overview: string;
     trailers?: { name: string; url: string; thumb_url: string }[];
+    is_released: boolean;
   };
   extended: {
     is_watched: boolean;
@@ -48,27 +49,21 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
     return <Typography color="error">{error}</Typography>;
   }
 
-  const sortedMovies = [...movies]
-    .filter(filter)
-    .sort((a, b) => {
-      if (sort.criteria === 'name') {
-        return sort.order === 'asc'
-          ? a.meta.name.localeCompare(b.meta.name)
-          : b.meta.name.localeCompare(a.meta.name);
-      } else if (sort.criteria === 'releaseDate') {
-        return sort.order === 'asc'
-          ? new Date(a.meta.first_release_date).getTime() - new Date(b.meta.first_release_date).getTime()
-          : new Date(b.meta.first_release_date).getTime() - new Date(a.meta.first_release_date).getTime();
-      } else if (sort.criteria === 'runtime') {
-        return sort.order === 'asc'
-          ? a.meta.runtime - b.meta.runtime
-          : b.meta.runtime - a.meta.runtime;
-      }
-      return 0;
-    });
+  const filteredMovies = movies.filter((movie) => filter(movie));
+
+  const sortedMovies = filteredMovies.sort((a, b) => {
+    if (sort.criteria === 'name') {
+      return sort.order === 'asc' ? a.meta.name.localeCompare(b.meta.name) : b.meta.name.localeCompare(a.meta.name);
+    } else if (sort.criteria === 'releaseDate') {
+      return sort.order === 'asc' ? new Date(a.meta.first_release_date).getTime() - new Date(b.meta.first_release_date).getTime() : new Date(b.meta.first_release_date).getTime() - new Date(a.meta.first_release_date).getTime();
+    } else if (sort.criteria === 'runtime') {
+      return sort.order === 'asc' ? a.meta.runtime - b.meta.runtime : b.meta.runtime - a.meta.runtime;
+    }
+    return 0;
+  });
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={0.1}>
       {sortedMovies.map((movie) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={movie.uuid}>
           <MovieCard
