@@ -1,35 +1,56 @@
-import React, { useState } from 'react';
-import { Box, Modal, FormControl, InputLabel, Select, MenuItem, Button, Typography, Slider, TextField } from '@mui/material';
-import { Autocomplete } from '@mui/lab';
-import { styled } from '@mui/system';
+import React, { useState } from "react";
+import {
+  Box,
+  Modal,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
+  Typography,
+  Slider,
+  TextField,
+} from "@mui/material";
+import { Autocomplete } from "@mui/lab";
+import { styled } from "@mui/system";
 
 interface FiltersModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (filter: { genre?: string[]; year?: number[]; runtime?: number[] }, sort: { criteria: string; order: 'asc' | 'desc' }) => void;
+  onSave: (
+    filter: { genre?: string[]; year?: number[]; runtime?: number[] },
+    sort: { criteria: string; order: "asc" | "desc" }
+  ) => void;
 }
 
-const FiltersModal: React.FC<FiltersModalProps> = ({ open, onClose, onSave }) => {
+const FiltersModal: React.FC<FiltersModalProps> = ({
+  open,
+  onClose,
+  onSave,
+}) => {
   const [genre, setGenre] = useState<string[]>([]);
   const [year, setYear] = useState<number[]>([1900, new Date().getFullYear()]);
   const [runtime, setRuntime] = useState<number[]>([0, 360]);
-  const [sortCriteria, setSortCriteria] = useState('');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortCriteria, setSortCriteria] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const handleSave = () => {
-    onSave({ genre, year, runtime }, { criteria: sortCriteria, order: sortOrder });
+    onSave(
+      { genre, year, runtime },
+      { criteria: sortCriteria, order: sortOrder }
+    );
     onClose();
   };
 
-  const genresOptions = ['Action', 'Comedy', 'Drama', 'Science Fiction'];
+  const genresOptions = ["Action", "Comedy", "Drama", "Science Fiction"];
 
   const CompactSelect = styled(Select)(({ theme }) => ({
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '8px',
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "8px",
       backgroundColor: theme.palette.background.paper,
     },
-    '& .MuiOutlinedInput-input': {
-      padding: '10px 14px',
+    "& .MuiOutlinedInput-input": {
+      padding: "10px 14px",
     },
   }));
 
@@ -47,7 +68,9 @@ const FiltersModal: React.FC<FiltersModalProps> = ({ open, onClose, onSave }) =>
         margin="auto"
         mt={5}
       >
-        <Typography variant="h6" align="center">Filter and Sort</Typography>
+        <Typography variant="h6" align="center">
+          Filter and Sort
+        </Typography>
         <FormControl variant="outlined" fullWidth>
           <Autocomplete
             multiple
@@ -55,7 +78,12 @@ const FiltersModal: React.FC<FiltersModalProps> = ({ open, onClose, onSave }) =>
             value={genre}
             onChange={(_, newValue) => setGenre(newValue)}
             renderInput={(params) => (
-              <TextField {...params} variant="outlined" label="Genre" placeholder="Select genres" />
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Genre"
+                placeholder="Select genres"
+              />
             )}
           />
         </FormControl>
@@ -95,7 +123,7 @@ const FiltersModal: React.FC<FiltersModalProps> = ({ open, onClose, onSave }) =>
           <InputLabel>Order</InputLabel>
           <CompactSelect
             value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+            onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
             label="Order"
           >
             <MenuItem value="asc">Ascending</MenuItem>

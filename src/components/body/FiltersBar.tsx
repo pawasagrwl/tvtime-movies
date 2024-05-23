@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import { Box, TextField, IconButton, InputAdornment } from '@mui/material';
-import { styled } from '@mui/system';
-import { FilterList, Clear } from '@mui/icons-material';
-import FiltersModal from './FiltersModal';
+import React, { useState } from "react";
+import { Box, TextField, IconButton, InputAdornment } from "@mui/material";
+import { styled } from "@mui/system";
+import { FilterList, Clear } from "@mui/icons-material";
+import FiltersModal from "./FiltersModal";
 
 interface FiltersBarProps {
-  onFilterChange: (filter: { genre?: string[]; year?: number[]; runtime?: number[] }) => void;
-  onSortChange: (sort: { criteria: string; order: 'asc' | 'desc' }) => void;
+  onFilterChange: (filter: {
+    genre?: string[];
+    year?: number[];
+    runtime?: number[];
+  }) => void;
+  onSortChange: (sort: { criteria: string; order: "asc" | "desc" }) => void;
   onSearchChange: (searchTerm: string) => void;
 }
 
@@ -15,7 +19,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
   onSortChange,
   onSearchChange,
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,27 +28,30 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
   };
 
   const handleReset = () => {
-    setSearchTerm('');
+    setSearchTerm("");
     onFilterChange({});
-    onSortChange({ criteria: '', order: 'asc' });
-    onSearchChange('');
+    onSortChange({ criteria: "", order: "asc" });
+    onSearchChange("");
   };
 
-  const handleSave = (filter: { genre?: string[]; year?: number[]; runtime?: number[] }, sort: { criteria: string; order: 'asc' | 'desc' }) => {
+  const handleSave = (
+    filter: { genre?: string[]; year?: number[]; runtime?: number[] },
+    sort: { criteria: string; order: "asc" | "desc" }
+  ) => {
     onFilterChange(filter);
     onSortChange(sort);
   };
 
   const CompactTextField = styled(TextField)(({ theme }) => ({
-    '& .MuiOutlinedInput-root': {
-      borderRadius: '20px',
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "20px",
       backgroundColor: theme.palette.background.paper,
     },
-    '& .MuiOutlinedInput-input': {
-      padding: '10px 14px',
+    "& .MuiOutlinedInput-input": {
+      padding: "10px 14px",
     },
-    '& .MuiInputAdornment-positionEnd': {
-      marginRight: '4px', // Adjust margin to position the icon correctly
+    "& .MuiInputAdornment-positionEnd": {
+      marginRight: "4px", // Adjust margin to position the icon correctly
     },
   }));
 
@@ -60,7 +67,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={() => setSearchTerm('')} color="secondary">
+                <IconButton onClick={() => setSearchTerm("")} color="secondary">
                   <Clear />
                 </IconButton>
               </InputAdornment>
@@ -75,7 +82,11 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         </IconButton>
       </Box>
 
-      <FiltersModal open={open} onClose={() => setOpen(false)} onSave={handleSave} />
+      <FiltersModal
+        open={open}
+        onClose={() => setOpen(false)}
+        onSave={handleSave}
+      />
     </>
   );
 };

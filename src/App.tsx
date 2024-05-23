@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Body from './components/Body';
+import React, { useState } from "react";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Body from "./components/Body";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
 
   const theme = createTheme({
     palette: {
-      mode: darkMode ? 'dark' : 'light',
+      mode: darkMode ? "dark" : "light",
     },
   });
 
@@ -19,10 +20,12 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Header toggleTheme={toggleTheme} darkMode={darkMode} />
-      <Body />
-      <Footer />
+      <StyledThemeProvider theme={theme}>
+        <CssBaseline />
+        <Header toggleTheme={toggleTheme} darkMode={darkMode} />
+        <Body />
+        <Footer />
+      </StyledThemeProvider>
     </ThemeProvider>
   );
 };

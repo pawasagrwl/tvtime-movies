@@ -1,6 +1,6 @@
-import React from 'react';
-import { Tabs, Tab, Box } from '@mui/material';
-import { styled } from '@mui/system';
+import React from "react";
+import { Tabs, Tab, Box } from "@mui/material";
+import { styled } from "@mui/system";
 
 interface NavigationTabsProps {
   activeTab: string;
@@ -8,20 +8,23 @@ interface NavigationTabsProps {
 }
 
 const StyledTabs = styled(Tabs)({
-  minHeight: '32px', // Reduce the thickness of the Tabs
-  '& .MuiTabs-indicator': {
-    height: '2px', // Make the indicator thinner
+  minHeight: "32px", // Reduce the thickness of the Tabs
+  "& .MuiTabs-indicator": {
+    height: "2px", // Make the indicator thinner
   },
   marginBottom: 0, // Minimize space below the tabs
 });
 
 const StyledTab = styled(Tab)({
-  minHeight: '32px', // Reduce the thickness of the Tab
-  fontSize: '1rem', // Increase the font size
-  padding: '2px 12px', // Adjust padding to minimize space
+  minHeight: "32px", // Reduce the thickness of the Tab
+  fontSize: "1rem", // Increase the font size
+  padding: "2px 12px", // Adjust padding to minimize space
 });
 
-const NavigationTabs: React.FC<NavigationTabsProps> = ({ activeTab, setActiveTab }) => {
+const NavigationTabs: React.FC<NavigationTabsProps> = ({
+  activeTab,
+  setActiveTab,
+}) => {
   return (
     <Box display="flex" justifyContent="center" width="100%">
       <StyledTabs

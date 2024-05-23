@@ -11,7 +11,11 @@ import LinkIcon from "@mui/icons-material/Link";
 import MovieModal from "./MovieModal";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { MovieItemProps } from "../../../types/types";
-import { formatDate, formatRuntime, formatReleaseDays } from "../../../utils/format";
+import {
+  formatDate,
+  formatRuntime,
+  formatReleaseDays,
+} from "../../../utils/format";
 
 const MovieItem: React.FC<MovieItemProps> = ({
   uuid,
@@ -31,7 +35,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
   const handleClose = () => setOpen(false);
 
   const releaseDateFormatted = formatDate(releaseDate);
-  const daysUntilRelease = formatReleaseDays(releaseDate)
+  const daysUntilRelease = formatReleaseDays(releaseDate);
 
   return (
     <>

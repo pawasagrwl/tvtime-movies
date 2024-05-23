@@ -2,19 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Box, IconButton, Typography, Grid } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import CopyrightIcon from "@mui/icons-material/Copyright";
-import data from '../data.json';
-
+import data from "../data.json";
 
 const Footer: React.FC = () => {
   const [lastUpdated, setLastUpdated] = useState<string>("");
 
   useEffect(() => {
-      try {
-        const last_updated = data.data.last_updated;
-        setLastUpdated(last_updated)
-      } catch (error) {
-        console.error("Error fetching last updated date:", error);
-      }
+    try {
+      const last_updated = data.data.last_updated;
+      setLastUpdated(last_updated);
+    } catch (error) {
+      console.error("Error fetching last updated date:", error);
+    }
   }, []);
 
   return (
