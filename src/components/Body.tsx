@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Fab } from "@mui/material";
 import NavigationTabs from "./body/NavigationTabs";
 import FiltersBar from "./body/FiltersBar";
 import MovieList from "./body/movieList/MovieList";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const Body: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("watchlist");
@@ -48,6 +49,13 @@ const Body: React.FC = () => {
     return true;
   };
 
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div>
       <NavigationTabs activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -87,6 +95,18 @@ const Body: React.FC = () => {
           sort={sort}
         />
       </Box>
+      <Fab
+        color="secondary"
+        aria-label="scroll-to-top"
+        onClick={handleScrollToTop}
+        sx={{
+          position: "fixed",
+          bottom: 50,
+          right: 12,
+        }}
+      >
+        <KeyboardArrowUpIcon />
+      </Fab>
     </div>
   );
 };

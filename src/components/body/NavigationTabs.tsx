@@ -1,25 +1,11 @@
 import React from "react";
-import { Tabs, Tab, Box } from "@mui/material";
-import { styled } from "@mui/system";
+import { Box } from "@mui/material";
+import { StyledTab, StyledTabs } from "../styled/tabs";
 
 interface NavigationTabsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
 }
-
-const StyledTabs = styled(Tabs)({
-  minHeight: "32px", // Reduce the thickness of the Tabs
-  "& .MuiTabs-indicator": {
-    height: "2px", // Make the indicator thinner
-  },
-  marginBottom: 0, // Minimize space below the tabs
-});
-
-const StyledTab = styled(Tab)({
-  minHeight: "32px", // Reduce the thickness of the Tab
-  fontSize: "1rem", // Increase the font size
-  padding: "2px 12px", // Adjust padding to minimize space
-});
 
 const NavigationTabs: React.FC<NavigationTabsProps> = ({
   activeTab,
@@ -29,11 +15,11 @@ const NavigationTabs: React.FC<NavigationTabsProps> = ({
     <Box display="flex" justifyContent="center" width="100%">
       <StyledTabs
         value={activeTab}
-        onChange={(_, newValue) => setActiveTab(newValue)} // Remove 'event' parameter
+        onChange={(_, newValue) => setActiveTab(newValue)}
         textColor="inherit"
         indicatorColor="secondary"
-        aria-label="tabs"
-        variant="fullWidth" // Ensure the tabs take the full width
+        aria-label="navigation tabs"
+        variant="fullWidth"
       >
         <StyledTab label="Watchlist" value="watchlist" />
         <StyledTab label="Upcoming" value="upcoming" />

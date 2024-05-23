@@ -3,13 +3,13 @@ import { format, parseISO, isValid, differenceInDays } from "date-fns";
 export const formatRuntime = (seconds: number): string => {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
-  return `${hours}h ${minutes}m`;
+  return `${hours}h${minutes}m`;
 };
 
 export const formatDate = (dateString: string): string => {
   const date = parseISO(dateString);
   if (isValid(date)) {
-    return format(date, "dd MMMM yyyy");
+    return format(date, "dd MMM yyyy");
   } else {
     return "Invalid Date";
   }
