@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, CircularProgress, Typography } from '@mui/material';
-import MovieCard from './MovieCard';
+import MovieItem from './MovieItem';
 import data from '../../../data.json';
 
 interface Movie {
@@ -66,7 +66,7 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
     <Grid container spacing={0.1}>
       {sortedMovies.map((movie) => (
         <Grid item xs={12} sm={6} md={4} lg={3} key={movie.uuid}>
-          <MovieCard
+          <MovieItem
             name={movie.meta.name}
             releaseDate={movie.meta.first_release_date}
             runtime={movie.meta.runtime}
