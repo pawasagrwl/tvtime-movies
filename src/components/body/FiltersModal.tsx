@@ -131,7 +131,7 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
           </CompactSelect>
         </FormControl>
         <Button variant="contained" color="primary" onClick={handleSave}>
-          Save
+          Apply
         </Button>
       </Box>
     </Modal>
