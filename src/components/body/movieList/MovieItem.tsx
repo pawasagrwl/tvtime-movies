@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Card, CardContent, CardMedia, Typography, Box } from "@mui/material";
 import MovieModal from "./MovieModal";
 import { format, parseISO, isValid, differenceInDays } from "date-fns";
 
@@ -125,17 +119,16 @@ const MovieItem: React.FC<MovieItemProps> = ({
               variant="h6"
               style={{
                 fontWeight: "bold",
-                whiteSpace: "normal", // Allow text to wrap
-                overflow: "hidden", // Keep this if you want to avoid overflow beyond a certain limit
-                textOverflow: "ellipsis", // This can still be useful if you set a max height
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 1, // You might want to adjust this based on your design
+                whiteSpace: "normal", // Allow text to wrap normally
+                overflow: "hidden", // Optional: Use if you want to avoid overflow beyond the container
+                textOverflow: "ellipsis", // Optional: Use if you want to indicate overflow with ellipsis
+                display: "block", // Ensure it behaves as a block element
                 color: "#ffdd57", // Custom color for the title
               }}
             >
               {name}
             </Typography>
+
             <Typography
               variant="body2"
               style={{
