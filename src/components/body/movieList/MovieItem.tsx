@@ -5,7 +5,6 @@ import {
   CardMedia,
   Typography,
   Box,
-  Button,
 } from "@mui/material";
 import MovieModal from "./MovieModal";
 import { format, parseISO, isValid, differenceInDays } from "date-fns";
@@ -62,17 +61,33 @@ const MovieItem: React.FC<MovieItemProps> = ({
           flexDirection: "row",
           alignItems: "center",
           marginBottom: "8px",
-          backgroundColor: "#2A2A2A",
-          color: "#FFFFFF",
+          backgroundColor: "#1c1c1c",
+          color: "#ffffff",
           width: "100%", // Ensure the card takes full width
           height: "150px", // Ensure the card has a fixed height
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          transition: "transform 0.2s ease-in-out",
+          cursor: "pointer",
         }}
         onClick={handleOpen}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.transform = "scale(1.02)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.transform = "scale(1)";
+        }}
       >
         {posterUrl ? (
           <CardMedia
             component="img"
-            style={{ width: 100, height: 150, objectFit: "cover" }}
+            style={{
+              width: 100,
+              height: 150,
+              objectFit: "cover",
+              borderTopLeftRadius: "8px",
+              borderBottomLeftRadius: "8px",
+            }}
             image={posterUrl}
             alt={name}
           />
@@ -85,6 +100,8 @@ const MovieItem: React.FC<MovieItemProps> = ({
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              borderTopLeftRadius: "8px",
+              borderBottomLeftRadius: "8px",
             }}
           >
             <Typography variant="h6" color="textSecondary">
@@ -95,7 +112,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
         <CardContent
           style={{
             flex: "1 0 auto",
-            padding: "8px 16px",
+            padding: "16px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
@@ -113,7 +130,8 @@ const MovieItem: React.FC<MovieItemProps> = ({
                 textOverflow: "ellipsis", // This can still be useful if you set a max height
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2, // You might want to adjust this based on your design
+                WebkitLineClamp: 1, // You might want to adjust this based on your design
+                color: "#ffdd57", // Custom color for the title
               }}
             >
               {name}
@@ -126,7 +144,8 @@ const MovieItem: React.FC<MovieItemProps> = ({
                 textOverflow: "ellipsis", // Use this with a max height if you want to limit the blocks of text
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 3, // Adjust the number of lines allowed
+                WebkitLineClamp: 2, // Adjust the number of lines allowed
+                color: "#a0a0a0", // Custom color for the genres
               }}
             >
               {genres.join(", ")}
