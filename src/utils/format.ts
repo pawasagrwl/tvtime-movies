@@ -21,3 +21,11 @@ export const formatReleaseDays = (dateString: string): number | null => {
     : null;
   return releaseDays;
 };
+
+export const formatVotes = (votes: string): string => {
+  const votesNumber = parseInt(votes.replace(/,/g, ''), 10);
+  if (votesNumber >= 1000) {
+    return `${(votesNumber / 1000).toFixed(1)}k`;
+  }
+  return votesNumber.toString();
+};
