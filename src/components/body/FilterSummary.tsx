@@ -1,6 +1,7 @@
-// FilterSummary.tsx
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import SortIcon from "@mui/icons-material/Sort";
 
 interface FilterSummaryProps {
   count: number;
@@ -13,6 +14,9 @@ const FilterSummary: React.FC<FilterSummaryProps> = ({
   filters,
   sort,
 }) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const formatFilters = () => {
     const genreFilter = filters.genre
       ? `Genres: ${filters.genre.join(", ")}`
@@ -44,10 +48,23 @@ const FilterSummary: React.FC<FilterSummaryProps> = ({
       borderRadius={1}
       boxShadow={1}
       mt={2}
+      sx={{
+        flexDirection: isSmallScreen ? "column" : "row",
+        "& svg": {
+          marginRight: 0.5,
+        },
+      }}
     >
-      <Typography variant="body2">
-        Found {count} movies filtered by {formatFilters()}. Sorted by{" "}
-        {formatSort()}.
+      <Typography variant="body2" component="span">
+        <FilterListIcon fontSize="small" /> {count} movies filtered by{" "}
+        {formatFilters()}.
+      </Typography>
+      <Typography
+        variant="body2"
+        component="span"
+        sx={{ marginLeft: isSmallScreen ? 0 : 2 }}
+      >
+        <SortIcon fontSize="small" /> Sorted by {formatSort()}.
       </Typography>
     </Box>
   );
