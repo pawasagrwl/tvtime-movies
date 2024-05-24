@@ -25,7 +25,7 @@ const MovieRatings: React.FC<MovieRatingsProps> = ({ movieName }) => {
     const fetchRatings = async () => {
       try {
         const response = await axios.get(
-          `http://www.omdbapi.com/?t=${encodeURIComponent(
+          `https://www.omdbapi.com/?t=${encodeURIComponent(
             movieName
           )}&apikey=853f3339`
         );
