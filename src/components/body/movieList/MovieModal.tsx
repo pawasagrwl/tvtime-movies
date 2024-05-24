@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Box,
@@ -10,8 +10,53 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { MovieModalProps } from "../../../types/types";
 import { formatDate, formatRuntime } from "../../../utils/format";
+import axios from "axios";
 
 const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
+  const [additionalData, setAdditionalData] = useState({
+    imdbRating: "",
+    imdbParentsGuide: "",
+    rottenTomatoesRating: "",
+    filmCertification: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (open) {
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `http://www.omdbapi.com/?t=${encodeURIComponent(
+              movie.name
+            )}&apikey=853f3339`
+          );
+          setAdditionalData({
+            imdbRating: response.data.imdbRating,
+            imdbParentsGuide: response.data.Rated,
+            rottenTomatoesRating: response.data.Ratings.find(
+              (rating) => rating.Source === "Rotten Tomatoes"
+            )?.Value,
+            filmCertification: response.data.Rated,
+          });
+        } catch (error) {
+          setError("Failed to fetch additional data");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    }
+  }, [open, movie.name]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -51,7 +96,11 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
           }}
         >
           <Typography variant="h6">Movie Details</Typography>
-          <IconButton aria-label="close" onClick={onClose} sx={{ color: "#fff" }}>
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            sx={{ color: "#fff" }}
+          >
             <CloseIcon />
           </IconButton>
         </Box>
@@ -127,6 +176,18 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
           </Typography>
           <Typography variant="subtitle1" color="textSecondary" gutterBottom>
             Genres: {movie.genres.join(", ")}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+            IMDb Rating: {additionalData.imdbRating}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+            Parents Guide: {additionalData.imdbParentsGuide}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+            Rotten Tomatoes Rating: {additionalData.rottenTomatoesRating}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+            Film Certification: {additionalData.filmCertification}
           </Typography>
         </Box>
       </Box>
