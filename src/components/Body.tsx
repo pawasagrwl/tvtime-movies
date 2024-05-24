@@ -23,26 +23,10 @@ const Body: React.FC = () => {
     watched: number;
   }>({ watchlist: 0, upcoming: 0, watched: 0 });
 
-  useEffect(() => {
-    const movieData = data.data.objects;
-    const watchlistCount = movieData.filter(
-      (movie: any) =>
-        !movie.extended.is_watched &&
-        movie.meta.is_released &&
-        movie.meta.runtime > 0
-    ).length;
-    const upcomingCount = movieData.filter(
-      (movie: any) => !movie.meta.is_released || movie.meta.runtime === 0
-    ).length;
-    const watchedCount = movieData.filter(
-      (movie: any) => movie.extended.is_watched
-    ).length;
+  const { genres, years, runtimes } = data.data;
 
-    setMovieCounts({
-      watchlist: watchlistCount,
-      upcoming: upcomingCount,
-      watched: watchedCount,
-    });
+  useEffect(() => {
+    setMovieCounts(data.data.counts);
   }, []);
 
   const handleFilterChange = (filter: {
@@ -100,6 +84,9 @@ const Body: React.FC = () => {
           onFilterChange={handleFilterChange}
           onSortChange={handleSortChange}
           onSearchChange={handleSearchChange}
+          genres={genres}
+          years={years}
+          runtimes={runtimes}
         />
         <MovieList
           filter={(movie) => {

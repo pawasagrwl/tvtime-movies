@@ -21,16 +21,22 @@ interface FiltersModalProps {
     filter: { genre?: string[]; year?: number[]; runtime?: number[] },
     sort: { criteria: string; order: "asc" | "desc" }
   ) => void;
+  genres: string[];
+  years: number[];
+  runtimes: number[];
 }
 
 const FiltersModal: React.FC<FiltersModalProps> = ({
   open,
   onClose,
   onSave,
+  genres,
+  years,
+  runtimes,
 }) => {
   const [genre, setGenre] = useState<string[]>([]);
-  const [year, setYear] = useState<number[]>([1900, new Date().getFullYear()]);
-  const [runtime, setRuntime] = useState<number[]>([0, 360]);
+  const [year, setYear] = useState<number[]>([years[0], years[1]]);
+  const [runtime, setRuntime] = useState<number[]>([runtimes[0], runtimes[1]]);
   const [sortCriteria, setSortCriteria] = useState("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -42,8 +48,6 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
     onClose();
   };
 
-  const genresOptions = ["Action", "Comedy", "Drama", "Science Fiction"];
-
   const CompactSelect = styled(Select)(({ theme }) => ({
     "& .MuiOutlinedInput-root": {
       borderRadius: "8px",
@@ -53,6 +57,9 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
       padding: "10px 14px",
     },
   }));
+
+  // Sort genres alphabetically
+  const sortedGenres = [...genres].sort();
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -74,7 +81,7 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
         <FormControl variant="outlined" fullWidth>
           <Autocomplete
             multiple
-            options={genresOptions}
+            options={sortedGenres}
             value={genre}
             onChange={(_, newValue) => setGenre(newValue)}
             renderInput={(params) => (
@@ -92,16 +99,16 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
           value={year}
           onChange={(_, newValue) => setYear(newValue as number[])}
           valueLabelDisplay="auto"
-          min={1900}
-          max={new Date().getFullYear()}
+          min={years[0]}
+          max={years[1]}
         />
         <Typography variant="body1">Runtime Range (minutes)</Typography>
         <Slider
           value={runtime}
           onChange={(_, newValue) => setRuntime(newValue as number[])}
           valueLabelDisplay="auto"
-          min={0}
-          max={360}
+          min={runtimes[0]}
+          max={runtimes[1]}
           step={15}
         />
         <FormControl variant="outlined" fullWidth>

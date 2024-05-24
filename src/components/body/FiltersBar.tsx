@@ -12,12 +12,18 @@ interface FiltersBarProps {
   }) => void;
   onSortChange: (sort: { criteria: string; order: "asc" | "desc" }) => void;
   onSearchChange: (searchTerm: string) => void;
+  genres: string[];
+  years: number[];
+  runtimes: number[];
 }
 
 const FiltersBar: React.FC<FiltersBarProps> = ({
   onFilterChange,
   onSortChange,
   onSearchChange,
+  genres,
+  years,
+  runtimes,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
@@ -86,6 +92,9 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         open={open}
         onClose={() => setOpen(false)}
         onSave={handleSave}
+        genres={genres}
+        years={years}
+        runtimes={runtimes}
       />
     </>
   );
