@@ -17,6 +17,19 @@ interface FiltersBarProps {
   runtimes: number[];
 }
 
+const CompactTextField = styled(TextField)(({ theme }) => ({
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "20px",
+    backgroundColor: theme.palette.background.paper,
+  },
+  "& .MuiOutlinedInput-input": {
+    padding: "10px 14px",
+  },
+  "& .MuiInputAdornment-positionEnd": {
+    marginRight: "4px",
+  },
+}));
+
 const FiltersBar: React.FC<FiltersBarProps> = ({
   onFilterChange,
   onSortChange,
@@ -47,19 +60,6 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
     onFilterChange(filter);
     onSortChange(sort);
   };
-
-  const CompactTextField = styled(TextField)(({ theme }) => ({
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "20px",
-      backgroundColor: theme.palette.background.paper,
-    },
-    "& .MuiOutlinedInput-input": {
-      padding: "10px 14px",
-    },
-    "& .MuiInputAdornment-positionEnd": {
-      marginRight: "4px", // Adjust margin to position the icon correctly
-    },
-  }));
 
   return (
     <>
