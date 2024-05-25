@@ -6,6 +6,8 @@ TV Time Movies is a React 18 TypeScript application designed to organize and dis
 
 GitHub Pages Hosting: [TV Time Movies](https://pawasagrwl.github.io/tvtime-movies/)
 
+*Disclaimer: This app is not for tracking your movie watchlist and does not connect with TV Time in any way. You need an existing account with TV Time and movies added to your account watchlist to extract the data and run this web app.*
+
 ## Features
 
 - Organizable movie list
@@ -18,7 +20,7 @@ GitHub Pages Hosting: [TV Time Movies](https://pawasagrwl.github.io/tvtime-movie
 
 ### Step 1: Making `data.txt`
 
-1. Open `app.tvtime.com`.
+1. Open [TV Time Desktop App](app.tvtime.com) and log in.
 2. Open the network inspection tool in your browser.
 3. Navigate to the "Profile" tab and let all movies load.
 4. In the network inspection tool, search for "tracking/cgw/follows/user".
@@ -169,14 +171,14 @@ Here's an example structure for `data.json`. Each object in the list should foll
    ```sh
    npm install
    ```
+3. Create `data.json` in the above format using `data.js ` as written above.
 
-3. Start the development server:
+4. Start the development server:
 
    ```sh
    npm run dev
    ```
-
-4. Open your browser and navigate to:
+5. Open your browser and navigate to:
    ```
    http://localhost:5173
    ```
