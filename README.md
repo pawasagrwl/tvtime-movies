@@ -22,9 +22,9 @@ GitHub Pages Hosting: [TV Time Movies](https://pawasagrwl.github.io/tvtime-movie
 
 1. Open [TV Time Desktop App](https://app.tvtime.com) and log in.
 2. Open the network inspection tool in your browser.
-3. Navigate to the "Profile" tab and let all movies load.
+3. Navigate to the "Profile" tab. Then open Movies and let all movies load.
 4. In the network inspection tool, search for "tracking/cgw/follows/user".
-5. Copy the raw response from every URL in that search and paste it into a file called `data.txt`.
+5. Copy the raw response from every URL in that search and paste it into a file called `data.txt`. (Responses from all URLs is copied to ensure all data is extracted as each URL only receives 500 movie object at max)
 
 ### Step 2: Making `data.json`
 
