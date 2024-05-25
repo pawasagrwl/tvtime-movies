@@ -63,7 +63,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
 
   return (
     <>
-      <Box display="flex" alignItems="center" gap={1} padding={1}>
+      <Box display="flex" alignItems="center" gap={1} padding="0.01rem 0.5rem">
         <CompactTextField
           variant="outlined"
           placeholder="Search"

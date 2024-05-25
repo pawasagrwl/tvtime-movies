@@ -114,7 +114,7 @@ const Body: React.FC = () => {
         setActiveTab={setActiveTab}
         movieCounts={movieCounts}
       />
-      <Box mt={2}>
+      <Box mt={1}>
         <FiltersBar
           onFilterChange={handleFilterChange}
           onSortChange={handleSortChange}
@@ -125,7 +125,6 @@ const Body: React.FC = () => {
         />
         <FilterSummary
           count={filteredMovieCount}
-          filters={filters}
           sort={sort}
         />
         <MovieList
