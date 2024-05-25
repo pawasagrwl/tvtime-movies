@@ -20,7 +20,7 @@ GitHub Pages Hosting: [TV Time Movies](https://pawasagrwl.github.io/tvtime-movie
 
 ### Step 1: Making `data.txt`
 
-1. Open [TV Time Desktop App](app.tvtime.com) and log in.
+1. Open [TV Time Desktop App](https://app.tvtime.com) and log in.
 2. Open the network inspection tool in your browser.
 3. Navigate to the "Profile" tab and let all movies load.
 4. In the network inspection tool, search for "tracking/cgw/follows/user".
