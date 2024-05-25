@@ -4,9 +4,15 @@ import { createReadStream } from "fs";
 import { createInterface } from "readline";
 
 const inputFilePath = "data.txt";
-const outputFilePath = "data.json";
+const outputFilePath = "src/data.json";
 
 async function processFile() {
+  // Check if data.txt exists
+  if (!fs.existsSync(inputFilePath)) {
+    console.error("Error: No data.txt file found. Program will exit.");
+    process.exit(1); // Exit the program
+  }
+
   const fileStream = createReadStream(inputFilePath);
   const rl = createInterface({
     input: fileStream,
