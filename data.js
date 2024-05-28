@@ -11,12 +11,12 @@ const TMDB_API_URL = "https://api.themoviedb.org/3/movie/";
 const TMDB_SEARCH_URL = "https://api.themoviedb.org/3/search/movie";
 const TMDB_KEYWORDS_URL = "https://api.themoviedb.org/3/movie/";
 
-async function fetchMovieIdByTitleAndYear(title, year) {
+async function fetchMovieIdBynameAndYear(name, year) {
   try {
     const response = await axios.get(TMDB_SEARCH_URL, {
       params: {
         api_key: TMDB_API_KEY,
-        query: title,
+        query: name,
         year: year,
       },
     });
@@ -24,12 +24,12 @@ async function fetchMovieIdByTitleAndYear(title, year) {
     if (results.length > 0) {
       return results[0].id;
     } else {
-      console.warn(`No TMDb ID found for movie: ${title} (${year})`);
+      console.warn(`No TMDb ID found for movie: ${name} (${year})`);
       return null;
     }
   } catch (error) {
     console.error(
-      `Error fetching TMDb ID for movie: ${title} (${year}):`,
+      `Error fetching TMDb ID for movie: ${name} (${year}):`,
       error
     );
     return null;
@@ -132,6 +132,9 @@ async function processFile() {
   console.log(`Total movies to process: ${objects.length}`);
 
   let genresSet = new Set();
+  let seriesSet = new Set();
+  let keywordsSet = new Set();
+  let languagesSet = new Set();
   let minYear = Infinity,
     maxYear = -Infinity;
   let minRuntime = Infinity,
@@ -141,25 +144,22 @@ async function processFile() {
   let processedCount = 0;
 
   for (const obj of objects) {
-    const title = obj.meta.name; // Assuming `title` is available in `obj.meta`
-    const year = new Date(obj.meta.first_release_date).getFullYear(); // Assuming `first_release_date` is available in `obj.meta`
+    const name = obj.meta.name;
+    const year = new Date(obj.meta.first_release_date).getFullYear();
 
-    if (!title || !year) {
-      console.warn(
-        `Warning: Missing title or release year for object with uuid ${obj.uuid}`
-      );
+    if (!name || !year) {
       continue;
     }
 
-    const movieId = await fetchMovieIdByTitleAndYear(title, year);
+    const movieId = await fetchMovieIdBynameAndYear(name, year);
     if (!movieId) {
-      console.warn(`Warning: Could not find TMDb ID for ${title} (${year})`);
       continue;
     }
 
     const movieDetails = await fetchMovieDetails(movieId);
+    let keywords = [];
     if (movieDetails) {
-      const keywords = await fetchMovieKeywords(movieId);
+      keywords = await fetchMovieKeywords(movieId);
 
       obj.meta.series_info = movieDetails.belongs_to_collection
         ? {
@@ -167,7 +167,17 @@ async function processFile() {
             series_id: movieDetails.belongs_to_collection.id,
           }
         : null;
+      if (movieDetails.belongs_to_collection) {
+        seriesSet.add(movieDetails.belongs_to_collection.name);
+      }
+
       obj.meta.keywords = keywords;
+      keywords.forEach((keyword) => keywordsSet.add(keyword));
+
+      obj.meta.original_language = movieDetails.original_language || null;
+      if (movieDetails.original_language) {
+        languagesSet.add(movieDetails.original_language);
+      }
 
       if (obj.meta.genres) {
         obj.meta.genres.forEach((genre) => genresSet.add(genre));
@@ -196,9 +206,31 @@ async function processFile() {
       }
     } else {
       console.warn(
-        `Warning: Could not retrieve details for ${title} (${year})`
+        `Warning: Could not retrieve details for ${name} (${year})`
       );
+      obj.meta.series_info = null;
+      obj.meta.keywords = [];
+      obj.meta.original_language = null;
     }
+
+    // Remove unnecessary fields from meta and extended
+    delete obj.meta.character_order;
+    delete obj.meta.characters;
+    delete obj.meta.created_at;
+    delete obj.meta.external_sources;
+    delete obj.meta.filter;
+    delete obj.meta.follower_count;
+    delete obj.meta.franchise;
+    delete obj.meta.position_in_franchise;
+    delete obj.meta.sorting;
+    delete obj.meta.status;
+    delete obj.meta.tagline;
+    delete obj.meta.translations;
+    delete obj.filter;
+    delete obj.sorting;
+    delete obj.created_at;
+    delete obj.updated_at;
+    delete obj.watched_at;
 
     processedCount++;
     process.stdout.write(
@@ -211,7 +243,7 @@ async function processFile() {
   console.log(`\nTotal movies processed: ${processedCount}`);
 
   const endTime = Date.now();
-  const fetchDuration = (endTime - startTime) / 1000; // Duration in seconds
+  const fetchDuration = (endTime - startTime) / 1000;
 
   const finalData = {
     data: {
@@ -220,6 +252,9 @@ async function processFile() {
         fetchDuration / 60
       )} minutes and ${Math.floor(fetchDuration % 60)} seconds`,
       genres: Array.from(genresSet),
+      series: Array.from(seriesSet),
+      keywords: Array.from(keywordsSet),
+      languages: Array.from(languagesSet),
       years: [minYear, maxYear],
       runtimes: [minRuntime, maxRuntime],
       counts: counts,
