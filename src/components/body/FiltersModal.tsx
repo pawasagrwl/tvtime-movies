@@ -7,17 +7,20 @@ import {
   Typography,
   Slider,
   TextField,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { Autocomplete } from "@mui/lab";
-import { styled } from "@mui/system";
 
 interface FiltersModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (
-    filter: { genre?: string[]; year?: number[]; runtime?: number[] },
-    sort: { criteria: string; order: "asc" | "desc" }
-  ) => void;
+  onSave: (filter: {
+    genre?: string[];
+    year?: number[];
+    runtime?: number[];
+    allGenres?: boolean;
+  }) => void;
   genres: string[];
   years: number[];
   runtimes: number[];
@@ -34,9 +37,10 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
   const [genre, setGenre] = useState<string[]>([]);
   const [year, setYear] = useState<number[]>([years[0], years[1]]);
   const [runtime, setRuntime] = useState<number[]>([runtimes[0], runtimes[1]]);
+  const [allGenres, setAllGenres] = useState<boolean>(false);
 
   const handleSave = () => {
-    onSave({ genre, year, runtime });
+    onSave({ genre, year, runtime, allGenres });
     onClose();
   };
 
@@ -76,6 +80,16 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
             )}
           />
         </FormControl>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={allGenres}
+              onChange={(e) => setAllGenres(e.target.checked)}
+              name="allGenres"
+            />
+          }
+          label="Show movies containing all selected genres"
+        />
         <Typography variant="body1">Year Range</Typography>
         <Slider
           value={year}

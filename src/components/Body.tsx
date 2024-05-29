@@ -13,29 +13,22 @@ const Body: React.FC = () => {
     genre?: string[];
     year?: number[];
     runtime?: number[];
+    allGenres?: boolean;
   }>({});
   const [sort, setSort] = useState<{ criteria: string; order: "asc" | "desc" }>(
     { criteria: "releaseDate", order: "desc" }
   );
   const [searchTerm, setSearchTerm] = useState("");
-  const [movieCounts, setMovieCounts] = useState<{
-    watchlist: number;
-    upcoming: number;
-    watched: number;
-  }>({ watchlist: 0, upcoming: 0, watched: 0 });
 
   const [filteredMovieCount, setFilteredMovieCount] = useState<number>(0);
 
   const { genres, years, runtimes } = data.data;
 
-  useEffect(() => {
-    setMovieCounts(data.data.counts);
-  }, []);
-
   const handleFilterChange = (filter: {
     genre?: string[];
     year?: number[];
     runtime?: number[];
+    allGenres?: boolean;
   }) => {
     setFilters(filter);
   };
@@ -79,7 +72,9 @@ const Body: React.FC = () => {
     return movies.filter((movie) => {
       const matchesTab = filterMovies(movie);
       const matchesGenre = filters.genre?.length
-        ? filters.genre.some((genre) => movie.meta.genres.includes(genre))
+        ? filters.allGenres
+          ? filters.genre.every((genre) => movie.meta.genres.includes(genre))
+          : filters.genre.some((genre) => movie.meta.genres.includes(genre))
         : true;
       const movieYear = new Date(movie.meta.first_release_date).getFullYear();
       const matchesYear = filters.year?.length
@@ -108,11 +103,7 @@ const Body: React.FC = () => {
 
   return (
     <div>
-      <NavigationTabs
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        movieCounts={movieCounts}
-      />
+      <NavigationTabs activeTab={activeTab} setActiveTab={setActiveTab} />
       <Box mt={1}>
         <FiltersBar
           onFilterChange={handleFilterChange}
@@ -127,7 +118,13 @@ const Body: React.FC = () => {
           filter={(movie) => {
             const matchesTab = filterMovies(movie);
             const matchesGenre = filters.genre?.length
-              ? filters.genre.some((genre) => movie.meta.genres.includes(genre))
+              ? filters.allGenres
+                ? filters.genre.every((genre) =>
+                    movie.meta.genres.includes(genre)
+                  )
+                : filters.genre.some((genre) =>
+                    movie.meta.genres.includes(genre)
+                  )
               : true;
             const movieYear = new Date(
               movie.meta.first_release_date

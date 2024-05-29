@@ -8,8 +8,10 @@ import {
   MenuItem,
   Button,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { styled } from "@mui/system";
+import { ArrowUpward, ArrowDownward } from "@mui/icons-material";
 
 interface SortModalProps {
   open: boolean;
@@ -36,6 +38,10 @@ const SortModal: React.FC<SortModalProps> = ({ open, onClose, onSave }) => {
     },
   }));
 
+  const toggleSortOrder = () => {
+    setSortOrder((prevOrder) => (prevOrder === "asc" ? "desc" : "asc"));
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -53,32 +59,35 @@ const SortModal: React.FC<SortModalProps> = ({ open, onClose, onSave }) => {
         <Typography variant="h6" align="center">
           Sort Options
         </Typography>
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel>Sort By</InputLabel>
-          <CompactSelect
-            value={sortCriteria}
-            onChange={(e) => setSortCriteria(e.target.value as string)}
-            label="Sort By"
+        <Box display="flex" alignItems="center" gap={1}>
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel>Sort By</InputLabel>
+            <CompactSelect
+              value={sortCriteria}
+              onChange={(e) => setSortCriteria(e.target.value as string)}
+              label="Sort By"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="name">Name</MenuItem>
+              <MenuItem value="releaseDate">Release Date</MenuItem>
+              <MenuItem value="runtime">Runtime</MenuItem>
+            </CompactSelect>
+          </FormControl>
+          <IconButton
+            onClick={toggleSortOrder}
+            edge="end"
+            sx={{
+              border: "1px solid",
+              borderColor: "divider",
+              borderRadius: 1,
+              padding: 1,
+            }}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="releaseDate">Release Date</MenuItem>
-            <MenuItem value="runtime">Runtime</MenuItem>
-          </CompactSelect>
-        </FormControl>
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel>Order</InputLabel>
-          <CompactSelect
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-            label="Order"
-          >
-            <MenuItem value="asc">Ascending</MenuItem>
-            <MenuItem value="desc">Descending</MenuItem>
-          </CompactSelect>
-        </FormControl>
+            {sortOrder === "asc" ? <ArrowUpward /> : <ArrowDownward />}
+          </IconButton>
+        </Box>
         <Button variant="contained" color="primary" onClick={handleSave}>
           Apply
         </Button>
