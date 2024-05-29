@@ -1,11 +1,10 @@
-// Body.tsx
 import React, { useState, useEffect } from "react";
 import { Box, Fab } from "@mui/material";
 import NavigationTabs from "./body/NavigationTabs";
 import FiltersBar from "./body/FiltersBar";
 import MovieList from "./body/movieList/MovieList";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import FilterSummary from "./body/FilterSummary"; // Import the new component
+import FilterSummary from "./body/FilterSummary";
 import data from "../data.json";
 
 const Body: React.FC = () => {
@@ -16,7 +15,7 @@ const Body: React.FC = () => {
     runtime?: number[];
   }>({});
   const [sort, setSort] = useState<{ criteria: string; order: "asc" | "desc" }>(
-    { criteria: "", order: "asc" }
+    { criteria: "releaseDate", order: "desc" }
   );
   const [searchTerm, setSearchTerm] = useState("");
   const [movieCounts, setMovieCounts] = useState<{
@@ -123,10 +122,7 @@ const Body: React.FC = () => {
           years={years}
           runtimes={runtimes}
         />
-        <FilterSummary
-          count={filteredMovieCount}
-          sort={sort}
-        />
+        <FilterSummary count={filteredMovieCount} sort={sort} />
         <MovieList
           filter={(movie) => {
             const matchesTab = filterMovies(movie);

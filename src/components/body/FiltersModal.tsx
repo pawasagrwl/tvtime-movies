@@ -3,9 +3,6 @@ import {
   Box,
   Modal,
   FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Button,
   Typography,
   Slider,
@@ -37,26 +34,11 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
   const [genre, setGenre] = useState<string[]>([]);
   const [year, setYear] = useState<number[]>([years[0], years[1]]);
   const [runtime, setRuntime] = useState<number[]>([runtimes[0], runtimes[1]]);
-  const [sortCriteria, setSortCriteria] = useState("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const handleSave = () => {
-    onSave(
-      { genre, year, runtime },
-      { criteria: sortCriteria, order: sortOrder }
-    );
+    onSave({ genre, year, runtime });
     onClose();
   };
-
-  const CompactSelect = styled(Select)(({ theme }) => ({
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "8px",
-      backgroundColor: theme.palette.background.paper,
-    },
-    "& .MuiOutlinedInput-input": {
-      padding: "10px 14px",
-    },
-  }));
 
   // Sort genres alphabetically
   const sortedGenres = [...genres].sort();
@@ -111,32 +93,6 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
           max={runtimes[1]}
           step={15}
         />
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel>Sort By</InputLabel>
-          <CompactSelect
-            value={sortCriteria}
-            onChange={(e) => setSortCriteria(e.target.value as string)}
-            label="Sort By"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="name">Name</MenuItem>
-            <MenuItem value="releaseDate">Release Date</MenuItem>
-            <MenuItem value="runtime">Runtime</MenuItem>
-          </CompactSelect>
-        </FormControl>
-        <FormControl variant="outlined" fullWidth>
-          <InputLabel>Order</InputLabel>
-          <CompactSelect
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value as "asc" | "desc")}
-            label="Order"
-          >
-            <MenuItem value="asc">Ascending</MenuItem>
-            <MenuItem value="desc">Descending</MenuItem>
-          </CompactSelect>
-        </FormControl>
         <Button variant="contained" color="primary" onClick={handleSave}>
           Apply
         </Button>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Box, TextField, IconButton, InputAdornment } from "@mui/material";
 import { styled } from "@mui/system";
-import { FilterList, Clear } from "@mui/icons-material";
+import { FilterList, Clear, Sort } from "@mui/icons-material";
 import FiltersModal from "./FiltersModal";
+import SortModal from "./SortModal"; // Import the new SortModal component
 
 interface FiltersBarProps {
   onFilterChange: (filter: {
@@ -39,7 +40,8 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
   runtimes,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [open, setOpen] = useState(false);
+  const [openFilters, setOpenFilters] = useState(false);
+  const [openSort, setOpenSort] = useState(false); // State for sort modal
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -53,11 +55,18 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
     onSearchChange("");
   };
 
-  const handleSave = (
-    filter: { genre?: string[]; year?: number[]; runtime?: number[] },
-    sort: { criteria: string; order: "asc" | "desc" }
-  ) => {
+  const handleSaveFilters = (filter: {
+    genre?: string[];
+    year?: number[];
+    runtime?: number[];
+  }) => {
     onFilterChange(filter);
+  };
+
+  const handleSaveSort = (sort: {
+    criteria: string;
+    order: "asc" | "desc";
+  }) => {
     onSortChange(sort);
   };
 
@@ -80,8 +89,11 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
             ),
           }}
         />
-        <IconButton onClick={() => setOpen(true)} color="primary">
+        <IconButton onClick={() => setOpenFilters(true)} color="primary">
           <FilterList />
+        </IconButton>
+        <IconButton onClick={() => setOpenSort(true)} color="primary">
+          <Sort />
         </IconButton>
         <IconButton onClick={handleReset} color="secondary">
           <Clear />
@@ -89,12 +101,17 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
       </Box>
 
       <FiltersModal
-        open={open}
-        onClose={() => setOpen(false)}
-        onSave={handleSave}
+        open={openFilters}
+        onClose={() => setOpenFilters(false)}
+        onSave={handleSaveFilters}
         genres={genres}
         years={years}
         runtimes={runtimes}
+      />
+      <SortModal
+        open={openSort}
+        onClose={() => setOpenSort(false)}
+        onSave={handleSaveSort}
       />
     </>
   );
