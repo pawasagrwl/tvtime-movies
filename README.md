@@ -40,6 +40,9 @@ Here's an example structure for `data.json`. Each object in the list should foll
   "data": {
     "last_updated": "YYYY-MM-DD",
     "genres": string[],
+    "series": string[],
+    "keywords": string[],
+    "languages": string[],
     "years": [
       EARLIEST_YEAR,
       LATEST_YEAR
@@ -58,20 +61,7 @@ Here's an example structure for `data.json`. Each object in the list should foll
         "uuid": "UNIQUE_IDENTIFIER",
         "type": "follow",
         "entity_type": "movie",
-        "created_at": "TIMESTAMP",
-        "updated_at": "TIMESTAMP",
-        "watched_at": "TIMESTAMP",
         "meta": {
-          "character_order": "",
-          "characters": [],
-          "created_at": "TIMESTAMP",
-          "external_sources": [
-            {
-              "id": "ID",
-              "source": "SOURCE_NAME",
-              "type": "external_source"
-            }
-          ],
           "fanart": [
             {
               "comment": "",
@@ -85,14 +75,9 @@ Here's an example structure for `data.json`. Each object in the list should foll
               "width": NUMBER
             }
           ],
-          "filter": [],
+     
           "first_release_date": "DATE",
-          "follower_count": NUMBER,
-          "franchise": {
-            "name": "",
-            "type": "franchise",
-            "uuid": ""
-          },
+          
           "genres": [
             "GENRE1",
             "GENRE2",
@@ -102,7 +87,6 @@ Here's an example structure for `data.json`. Each object in the list should foll
           "language": "LANGUAGE_CODE",
           "name": "MOVIE_TITLE",
           "overview": "MOVIE_OVERVIEW",
-          "position_in_franchise": NUMBER,
           "posters": [
             {
               "comment": "",
@@ -118,14 +102,16 @@ Here's an example structure for `data.json`. Each object in the list should foll
           ],
           "release_dates": [],
           "runtime": NUMBER,
-          "sorting": null,
-          "status": "",
-          "tagline": "",
           "trailers": [],
-          "translations": [],
           "type": "movie",
           "updated_at": "TIMESTAMP",
-          "uuid": "UUID"
+          "uuid": "UUID",
+          "series_info": {
+            "series_name": "Series Name",
+            "series_id": NUMBER,
+          },
+          "keywords": string[],
+          "original_language": "en" 
         },
         "extended": {
           "rating_count": NUMBER,
@@ -134,23 +120,6 @@ Here's an example structure for `data.json`. Each object in the list should foll
           "follower_count": NUMBER,
           "is_watched": BOOLEAN
         },
-        "filter": [
-          "FILTER_TYPE"
-        ],
-        "sorting": [
-          {
-            "value": "VALUE",
-            "id": "ID"
-          },
-          {
-            "value": "VALUE",
-            "id": "ID"
-          },
-          {
-            "value": "VALUE",
-            "id": "ID"
-          }
-        ]
       }
     ]
   }

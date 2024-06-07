@@ -6,6 +6,7 @@ import MovieList from "./body/movieList/MovieList";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import FilterSummary from "./body/FilterSummary";
 import data from "../data.json";
+import { Movie } from "../types/types";
 
 const Body: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("watchlist");
@@ -13,8 +14,12 @@ const Body: React.FC = () => {
     genre?: string[];
     year?: number[];
     runtime?: number[];
+    series?: string[];
+    keywords?: string[];
+    language?: string;
     allGenres?: boolean;
   }>({});
+
   const [sort, setSort] = useState<{ criteria: string; order: "asc" | "desc" }>(
     { criteria: "releaseDate", order: "desc" }
   );
@@ -22,12 +27,15 @@ const Body: React.FC = () => {
 
   const [filteredMovieCount, setFilteredMovieCount] = useState<number>(0);
 
-  const { genres, years, runtimes } = data.data;
+  const { genres, years, runtimes, series, keywords, languages } = data.data;
 
   const handleFilterChange = (filter: {
     genre?: string[];
     year?: number[];
     runtime?: number[];
+    series?: string[];
+    keywords?: string[];
+    language?: string;
     allGenres?: boolean;
   }) => {
     setFilters(filter);
@@ -44,7 +52,7 @@ const Body: React.FC = () => {
     setSearchTerm(term);
   };
 
-  const filterMovies = (movie: any) => {
+  const filterMovies = (movie: Movie) => {
     if (activeTab === "watchlist") {
       return (
         !movie.extended.is_watched &&
@@ -68,7 +76,7 @@ const Body: React.FC = () => {
     });
   };
 
-  const getFilteredMovieCount = (movies: any[]) => {
+  const getFilteredMovieCount = (movies: Movie[]) => {
     return movies.filter((movie) => {
       const matchesTab = filterMovies(movie);
       const matchesGenre = filters.genre?.length
@@ -87,12 +95,29 @@ const Body: React.FC = () => {
       const matchesSearch = searchTerm
         ? movie.meta.name.toLowerCase().includes(searchTerm.toLowerCase())
         : true;
+      const matchesSeries = filters.series?.length
+        ? filters.series.some((series) =>
+            movie.meta.series_info?.series_name.includes(series)
+          )
+        : true;
+      const matchesKeywords = filters.keywords?.length
+        ? filters.keywords.some((keyword) =>
+            movie.meta.keywords.includes(keyword)
+          )
+        : true;
+      const matchesLanguage = filters.language
+        ? movie.meta.original_language === filters.language
+        : true;
+
       return (
         matchesTab &&
         matchesGenre &&
         matchesYear &&
         matchesRuntime &&
-        matchesSearch
+        matchesSearch &&
+        matchesSeries &&
+        matchesKeywords &&
+        matchesLanguage
       );
     }).length;
   };
@@ -112,6 +137,9 @@ const Body: React.FC = () => {
           genres={genres}
           years={years}
           runtimes={runtimes}
+          series={series}
+          keywords={keywords}
+          languages={languages}
         />
         <FilterSummary count={filteredMovieCount} sort={sort} />
         <MovieList
@@ -139,12 +167,28 @@ const Body: React.FC = () => {
             const matchesSearch = searchTerm
               ? movie.meta.name.toLowerCase().includes(searchTerm.toLowerCase())
               : true;
+            const matchesSeries = filters.series?.length
+              ? filters.series.some((series) =>
+                  movie.meta.series_info?.series_name.includes(series)
+                )
+              : true;
+            const matchesKeywords = filters.keywords?.length
+              ? filters.keywords.some((keyword) =>
+                  movie.meta.keywords.includes(keyword)
+                )
+              : true;
+            const matchesLanguage = filters.language
+              ? movie.meta.original_language === filters.language
+              : true;
             return (
               matchesTab &&
               matchesGenre &&
               matchesYear &&
               matchesRuntime &&
-              matchesSearch
+              matchesSearch &&
+              matchesSeries &&
+              matchesKeywords &&
+              matchesLanguage
             );
           }}
           sort={sort}

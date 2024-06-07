@@ -11,6 +11,7 @@ import {
   Checkbox,
 } from "@mui/material";
 import { Autocomplete } from "@mui/lab";
+import { languageMap } from "../../types/languageMap";
 
 interface FiltersModalProps {
   open: boolean;
@@ -19,11 +20,17 @@ interface FiltersModalProps {
     genre?: string[];
     year?: number[];
     runtime?: number[];
+    series?: string[];
+    keywords?: string[];
+    language?: string;
     allGenres?: boolean;
   }) => void;
   genres: string[];
   years: number[];
   runtimes: number[];
+  series: string[];
+  keywords: string[];
+  languages: string[];
 }
 
 const FiltersModal: React.FC<FiltersModalProps> = ({
@@ -33,19 +40,39 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
   genres,
   years,
   runtimes,
+  series,
+  keywords,
+  languages,
 }) => {
   const [genre, setGenre] = useState<string[]>([]);
   const [year, setYear] = useState<number[]>([years[0], years[1]]);
   const [runtime, setRuntime] = useState<number[]>([runtimes[0], runtimes[1]]);
+  const [seriesState, setSeries] = useState<string[]>([]); // Rename to avoid conflict with prop
+  const [keywordState, setKeyword] = useState<string[]>([]); // Rename to avoid conflict with prop
+  const [language, setLanguage] = useState<string>(""); // Add language state
   const [allGenres, setAllGenres] = useState<boolean>(false);
 
   const handleSave = () => {
-    onSave({ genre, year, runtime, allGenres });
+    onSave({
+      genre,
+      year,
+      runtime,
+      series: seriesState,
+      keywords: keywordState,
+      language,
+      allGenres,
+    });
     onClose();
   };
 
-  // Sort genres alphabetically
   const sortedGenres = [...genres].sort();
+  const sortedSeries = [...series].sort();
+  const sortedKeywords = [...keywords].sort();
+  
+  const languageOptions = languages.map((lang) => ({
+    code: lang,
+    name: languageMap[lang] || lang,
+  }));
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -64,6 +91,55 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
         <Typography variant="h6" align="center">
           Filter and Sort
         </Typography>
+        <FormControl variant="outlined" fullWidth>
+          <Autocomplete
+            multiple
+            options={sortedSeries}
+            value={seriesState}
+            onChange={(_, newValue) => setSeries(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Series"
+                placeholder="Select series"
+              />
+            )}
+          />
+        </FormControl>
+        <FormControl variant="outlined" fullWidth>
+          <Autocomplete
+            multiple
+            options={sortedKeywords}
+            value={keywordState}
+            onChange={(_, newValue) => setKeyword(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Keywords"
+                placeholder="Select keywords"
+              />
+            )}
+          />
+        </FormControl>
+        <FormControl variant="outlined" fullWidth>
+          <Autocomplete
+            options={languageOptions}
+            getOptionLabel={(option) => option.name}
+            onChange={(_, newValue) =>
+              setLanguage(newValue ? newValue.code : "")
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Original Language"
+                placeholder="Select original language"
+              />
+            )}
+          />
+        </FormControl>
         <FormControl variant="outlined" fullWidth>
           <Autocomplete
             multiple

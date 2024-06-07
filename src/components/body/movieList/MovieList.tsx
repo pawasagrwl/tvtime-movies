@@ -28,7 +28,7 @@ const MovieList: React.FC<MovieListProps> = ({ filter, sort }) => {
     return <Typography color="error">{error}</Typography>;
   }
 
-  const filteredMovies = movies.filter((movie) => filter(movie));
+  const filteredMovies = movies.filter(filter);
 
   const sortedMovies = filteredMovies.sort((a, b) => {
     if (sort.criteria === "name") {

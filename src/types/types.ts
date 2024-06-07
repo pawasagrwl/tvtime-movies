@@ -2,14 +2,7 @@ export interface Movie {
   uuid: string;
   type: string;
   entity_type: string;
-  created_at: string;
-  updated_at: string;
-  watched_at: string;
   meta: {
-    character_order: string;
-    characters: any[];
-    created_at: string;
-    external_sources: { id: string; source: string; type: string }[];
     fanart: {
       comment: string;
       favorite_count: number;
@@ -21,16 +14,12 @@ export interface Movie {
       uuid: string;
       width: number;
     }[];
-    filter: string[];
     first_release_date: string;
-    follower_count: number;
-    franchise: { name: string; type: string; uuid: string };
     genres: string[];
     is_released: boolean;
     language: string;
     name: string;
     overview: string;
-    position_in_franchise: number;
     posters: {
       comment: string;
       favorite_count: number;
@@ -42,11 +31,8 @@ export interface Movie {
       uuid: string;
       width: number;
     }[];
-    release_dates: any[];
+    release_dates: string[];
     runtime: number;
-    sorting: any | null;
-    status: string;
-    tagline: string;
     trailers: {
       embeddable: boolean;
       is_featured: boolean;
@@ -57,10 +43,15 @@ export interface Movie {
       url: string;
       uuid: string;
     }[];
-    translations: any[];
     type: string;
     updated_at: string;
     uuid: string;
+    series_info?: {
+      series_name: string;
+      series_id: number;
+    } | null;
+    keywords: string[];
+    original_language: string;
   };
   extended: {
     rating_count: number;
@@ -85,8 +76,8 @@ export interface MovieItemProps {
   genres: string[];
   overview: string;
   trailers?: { name: string; url: string; thumb_url: string }[];
-  meta: any; // Ensure to type this properly based on the Movie type
-  extended: any; // Ensure to type this properly based on the Movie type
+  meta: Movie["meta"];
+  extended: Movie["extended"];
 }
 
 export interface MovieModalProps {
@@ -101,7 +92,7 @@ export interface MovieModalProps {
     genres: string[];
     overview: string;
     trailers?: { name: string; url: string; thumb_url: string }[];
-    meta: any; // Ensure to type this properly based on the Movie type
-    extended: any; // Ensure to type this properly based on the Movie type
+    meta: Movie["meta"];
+    extended: Movie["extended"];
   };
 }

@@ -3,19 +3,26 @@ import { Box, TextField, IconButton, InputAdornment } from "@mui/material";
 import { styled } from "@mui/system";
 import { FilterList, Clear, Sort } from "@mui/icons-material";
 import FiltersModal from "./FiltersModal";
-import SortModal from "./SortModal"; // Import the new SortModal component
+import SortModal from "./SortModal";
 
 interface FiltersBarProps {
   onFilterChange: (filter: {
     genre?: string[];
     year?: number[];
     runtime?: number[];
+    series?: string[];
+    keywords?: string[];
+    language?: string;
+    allGenres?: boolean;
   }) => void;
   onSortChange: (sort: { criteria: string; order: "asc" | "desc" }) => void;
   onSearchChange: (searchTerm: string) => void;
   genres: string[];
   years: number[];
   runtimes: number[];
+  series: string[];
+  keywords: string[];
+  languages: string[];
 }
 
 const CompactTextField = styled(TextField)(({ theme }) => ({
@@ -38,10 +45,13 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
   genres,
   years,
   runtimes,
+  series,
+  keywords,
+  languages,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [openFilters, setOpenFilters] = useState(false);
-  const [openSort, setOpenSort] = useState(false); // State for sort modal
+  const [openSort, setOpenSort] = useState(false);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -59,6 +69,10 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
     genre?: string[];
     year?: number[];
     runtime?: number[];
+    series?: string[];
+    keywords?: string[];
+    language?: string;
+    allGenres?: boolean;
   }) => {
     onFilterChange(filter);
   };
@@ -107,6 +121,9 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         genres={genres}
         years={years}
         runtimes={runtimes}
+        series={series}
+        keywords={keywords}
+        languages={languages}
       />
       <SortModal
         open={openSort}
