@@ -92,7 +92,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
             Keywords:
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-            {movie.meta.keywords
+            {movie.meta.keywords && movie.meta.keywords.length > 0
               ? movie.meta.keywords.map((keyword, index) => (
                   <Chip
                     key={index}
@@ -103,7 +103,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
                     }}
                   />
                 ))
-              : "No keywords"}
+              : "No Keywords Found"}
           </Box>
 
           <Divider sx={{ my: 2, borderColor: "#444" }} />
@@ -112,7 +112,6 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
           </Typography>
           <Typography variant="body1" gutterBottom sx={{ color: "#a0a0a0" }}>
             {movie.overview}
-          
           </Typography>
           {movie.trailers && movie.trailers.length > 0 && (
             <>
@@ -151,7 +150,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
               ))}
             </>
           )}
-          
+
           <Divider sx={{ my: 2, borderColor: "#444" }} />
           <Typography variant="subtitle1" color="textSecondary" gutterBottom>
             Release Date: {formatDate(movie.releaseDate)}

@@ -190,7 +190,7 @@ const MovieItem: React.FC<MovieItemProps> = ({
               marginTop: "4px",
             }}
           >
-            {meta.keywords ? meta.keywords.join(", ") : "No Keywords Found"}
+            {meta.keywords && meta.keywords.length > 0 ? meta.keywords.join(", ") : "No Keywords Found"}
           </Typography>
         </CardContent>
       </Card>

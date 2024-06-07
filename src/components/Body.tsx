@@ -26,7 +26,7 @@ const Body: React.FC = () => {
 
   const [filteredMovieCount, setFilteredMovieCount] = useState<number>(0);
 
-  const { genres, years, runtimes, series, keywords, languages } = data.data;
+  const { genres, years, runtimes, series, languages } = data.data;
 
   const handleFilterChange = (filter: {
     genre?: string[];
