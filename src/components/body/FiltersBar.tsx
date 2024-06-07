@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, TextField, IconButton, InputAdornment } from "@mui/material";
 import { styled } from "@mui/system";
-import { FilterList, Clear, Sort } from "@mui/icons-material";
+import { Edit, Clear, FilterList, Sort, Replay } from "@mui/icons-material";
 import FiltersModal from "./FiltersModal";
 import SortModal from "./SortModal";
 
@@ -11,7 +11,6 @@ interface FiltersBarProps {
     year?: number[];
     runtime?: number[];
     series?: string[];
-    keywords?: string[];
     language?: string;
     allGenres?: boolean;
   }) => void;
@@ -21,7 +20,6 @@ interface FiltersBarProps {
   years: number[];
   runtimes: number[];
   series: string[];
-  keywords: string[];
   languages: string[];
 }
 
@@ -46,7 +44,6 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
   years,
   runtimes,
   series,
-  keywords,
   languages,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,7 +67,6 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
     year?: number[];
     runtime?: number[];
     series?: string[];
-    keywords?: string[];
     language?: string;
     allGenres?: boolean;
   }) => {
@@ -94,15 +90,25 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
           onChange={handleSearchChange}
           fullWidth
           InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setSearchTerm("")} color="secondary">
-                  <Clear />
-                </IconButton>
+            startAdornment: (
+              <InputAdornment position="start">
+                {searchTerm ? (
+                  <IconButton
+                    onClick={() => setSearchTerm("")}
+                    color="secondary"
+                  >
+                    <Clear />
+                  </IconButton>
+                ) : (
+                  <IconButton edge="start" disabled>
+                    <Edit />
+                  </IconButton>
+                )}
               </InputAdornment>
             ),
           }}
         />
+
         <IconButton onClick={() => setOpenFilters(true)} color="primary">
           <FilterList />
         </IconButton>
@@ -110,7 +116,7 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
           <Sort />
         </IconButton>
         <IconButton onClick={handleReset} color="secondary">
-          <Clear />
+          <Replay />
         </IconButton>
       </Box>
 
@@ -122,7 +128,6 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
         years={years}
         runtimes={runtimes}
         series={series}
-        keywords={keywords}
         languages={languages}
       />
       <SortModal

@@ -15,7 +15,6 @@ const Body: React.FC = () => {
     year?: number[];
     runtime?: number[];
     series?: string[];
-    keywords?: string[];
     language?: string;
     allGenres?: boolean;
   }>({});
@@ -34,7 +33,6 @@ const Body: React.FC = () => {
     year?: number[];
     runtime?: number[];
     series?: string[];
-    keywords?: string[];
     language?: string;
     allGenres?: boolean;
   }) => {
@@ -96,13 +94,9 @@ const Body: React.FC = () => {
         ? movie.meta.name.toLowerCase().includes(searchTerm.toLowerCase())
         : true;
       const matchesSeries = filters.series?.length
-        ? filters.series.some((series) =>
-            movie.meta.series_info?.series_name.includes(series)
-          )
-        : true;
-      const matchesKeywords = filters.keywords?.length
-        ? filters.keywords.some((keyword) =>
-            movie.meta.keywords.includes(keyword)
+        ? filters.series.some(
+            (series) =>
+              movie.meta.series_info?.series_name?.includes(series) ?? false
           )
         : true;
       const matchesLanguage = filters.language
@@ -116,14 +110,13 @@ const Body: React.FC = () => {
         matchesRuntime &&
         matchesSearch &&
         matchesSeries &&
-        matchesKeywords &&
         matchesLanguage
       );
     }).length;
   };
 
   useEffect(() => {
-    setFilteredMovieCount(getFilteredMovieCount(data.data.objects));
+    setFilteredMovieCount(getFilteredMovieCount(data.data.objects as Movie[]));
   }, [filters, sort, searchTerm, activeTab]);
 
   return (
@@ -138,7 +131,6 @@ const Body: React.FC = () => {
           years={years}
           runtimes={runtimes}
           series={series}
-          keywords={keywords}
           languages={languages}
         />
         <FilterSummary count={filteredMovieCount} sort={sort} />
@@ -168,13 +160,10 @@ const Body: React.FC = () => {
               ? movie.meta.name.toLowerCase().includes(searchTerm.toLowerCase())
               : true;
             const matchesSeries = filters.series?.length
-              ? filters.series.some((series) =>
-                  movie.meta.series_info?.series_name.includes(series)
-                )
-              : true;
-            const matchesKeywords = filters.keywords?.length
-              ? filters.keywords.some((keyword) =>
-                  movie.meta.keywords.includes(keyword)
+              ? filters.series.some(
+                  (series) =>
+                    movie.meta.series_info?.series_name?.includes(series) ??
+                    false
                 )
               : true;
             const matchesLanguage = filters.language
@@ -187,7 +176,6 @@ const Body: React.FC = () => {
               matchesRuntime &&
               matchesSearch &&
               matchesSeries &&
-              matchesKeywords &&
               matchesLanguage
             );
           }}

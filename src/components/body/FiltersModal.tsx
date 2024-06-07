@@ -21,7 +21,6 @@ interface FiltersModalProps {
     year?: number[];
     runtime?: number[];
     series?: string[];
-    keywords?: string[];
     language?: string;
     allGenres?: boolean;
   }) => void;
@@ -29,7 +28,6 @@ interface FiltersModalProps {
   years: number[];
   runtimes: number[];
   series: string[];
-  keywords: string[];
   languages: string[];
 }
 
@@ -41,14 +39,12 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
   years,
   runtimes,
   series,
-  keywords,
   languages,
 }) => {
   const [genre, setGenre] = useState<string[]>([]);
   const [year, setYear] = useState<number[]>([years[0], years[1]]);
   const [runtime, setRuntime] = useState<number[]>([runtimes[0], runtimes[1]]);
   const [seriesState, setSeries] = useState<string[]>([]); // Rename to avoid conflict with prop
-  const [keywordState, setKeyword] = useState<string[]>([]); // Rename to avoid conflict with prop
   const [language, setLanguage] = useState<string>(""); // Add language state
   const [allGenres, setAllGenres] = useState<boolean>(false);
 
@@ -58,7 +54,6 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
       year,
       runtime,
       series: seriesState,
-      keywords: keywordState,
       language,
       allGenres,
     });
@@ -67,7 +62,6 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
 
   const sortedGenres = [...genres].sort();
   const sortedSeries = [...series].sort();
-  const sortedKeywords = [...keywords].sort();
   
   const languageOptions = languages.map((lang) => ({
     code: lang,
@@ -103,22 +97,6 @@ const FiltersModal: React.FC<FiltersModalProps> = ({
                 variant="outlined"
                 label="Series"
                 placeholder="Select series"
-              />
-            )}
-          />
-        </FormControl>
-        <FormControl variant="outlined" fullWidth>
-          <Autocomplete
-            multiple
-            options={sortedKeywords}
-            value={keywordState}
-            onChange={(_, newValue) => setKeyword(newValue)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Keywords"
-                placeholder="Select keywords"
               />
             )}
           />

@@ -50,7 +50,7 @@ export interface Movie {
       series_name: string;
       series_id: number;
     } | null;
-    keywords: string[];
+    keywords?: string[];
     original_language: string;
   };
   extended: {
