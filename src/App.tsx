@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Body from "./components/Body";
+import Footer from "./components/Footer";
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
