@@ -36,6 +36,15 @@ const CompactTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
+const CircleIconButton = styled(IconButton)(({ theme }) => ({
+  borderRadius: "50%",
+  border: `1px solid ${theme.palette.divider}`,
+  padding: "8px",
+  "&:hover": {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
 const FiltersBar: React.FC<FiltersBarProps> = ({
   onFilterChange,
   onSortChange,
@@ -109,15 +118,15 @@ const FiltersBar: React.FC<FiltersBarProps> = ({
           }}
         />
 
-        <IconButton onClick={() => setOpenFilters(true)} color="primary">
+        <CircleIconButton onClick={() => setOpenFilters(true)} color="primary">
           <FilterList />
-        </IconButton>
-        <IconButton onClick={() => setOpenSort(true)} color="primary">
+        </CircleIconButton>
+        <CircleIconButton onClick={() => setOpenSort(true)} color="primary">
           <Sort />
-        </IconButton>
-        <IconButton onClick={handleReset} color="secondary">
+        </CircleIconButton>
+        <CircleIconButton onClick={handleReset} color="secondary">
           <Replay />
-        </IconButton>
+        </CircleIconButton>
       </Box>
 
       <FiltersModal

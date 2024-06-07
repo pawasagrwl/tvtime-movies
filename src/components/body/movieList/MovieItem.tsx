@@ -158,7 +158,8 @@ const MovieItem: React.FC<MovieItemProps> = ({
                       marginBottom: "4px",
                     }}
                   >
-                    {" "} days
+                    {" "}
+                    days
                   </Typography>
                 </Typography>
                 <FiberManualRecordIcon sx={{ fontSize: 8, mx: 1 }} />
@@ -178,6 +179,19 @@ const MovieItem: React.FC<MovieItemProps> = ({
               <LinkIcon />
             </IconButton>
           </Box>
+          {/* Display keywords */}
+          <Typography
+            variant="body2"
+            style={{
+              color: "#a0a0a0",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              marginTop: "4px",
+            }}
+          >
+            {meta.keywords ? meta.keywords.join(", ") : "No Keywords Found"}
+          </Typography>
         </CardContent>
       </Card>
 

@@ -1,4 +1,3 @@
-// MovieModal.tsx
 import React from "react";
 import {
   Modal,
@@ -7,6 +6,7 @@ import {
   IconButton,
   CardMedia,
   Divider,
+  Chip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { MovieModalProps } from "../../../types/types";
@@ -85,11 +85,34 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
             {movie.name}
           </Typography>
 
-          {/* Add the MovieRatings component here */}
           <MovieRatings movieName={movie.name} />
 
+          <Divider sx={{ my: 2, borderColor: "#444" }} />
+          <Typography variant="subtitle1" gutterBottom>
+            Keywords:
+          </Typography>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+            {movie.meta.keywords
+              ? movie.meta.keywords.map((keyword, index) => (
+                  <Chip
+                    key={index}
+                    label={keyword}
+                    sx={{
+                      backgroundColor: "#333",
+                      color: "#fff",
+                    }}
+                  />
+                ))
+              : "No keywords"}
+          </Box>
+
+          <Divider sx={{ my: 2, borderColor: "#444" }} />
+          <Typography variant="subtitle1" gutterBottom>
+            Overview:
+          </Typography>
           <Typography variant="body1" gutterBottom sx={{ color: "#a0a0a0" }}>
             {movie.overview}
+          
           </Typography>
           {movie.trailers && movie.trailers.length > 0 && (
             <>
@@ -128,6 +151,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
               ))}
             </>
           )}
+          
           <Divider sx={{ my: 2, borderColor: "#444" }} />
           <Typography variant="subtitle1" color="textSecondary" gutterBottom>
             Release Date: {formatDate(movie.releaseDate)}
