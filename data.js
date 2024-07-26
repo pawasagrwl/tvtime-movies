@@ -151,9 +151,16 @@ async function processFile() {
       continue;
     }
 
-    const movieId = await fetchMovieIdBynameAndYear(name, year);
+    let movieId = await fetchMovieIdBynameAndYear(name, year);
     if (!movieId) {
-      continue;
+      const manualId = readlineSync.question(
+        `Enter TMDb ID for movie ${name} (${year}) or press Enter to skip: `
+      );
+      if (manualId) {
+        movieId = manualId;
+      } else {
+        continue;
+      }
     }
 
     const movieDetails = await fetchMovieDetails(movieId);
