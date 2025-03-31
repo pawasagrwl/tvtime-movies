@@ -11,7 +11,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { MovieModalProps } from "../../../types/types";
 import { formatDate, formatRuntime } from "../../../utils/format";
-import MovieRatings from "./MovieRatings"; // Import the MovieRatings component
+import MovieRatings from "./MovieRatings";
 
 const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
   return (
@@ -25,8 +25,8 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
           bgcolor: "#1c1c1c",
           color: "#ffffff",
           boxShadow: 24,
-          maxWidth: "95%", // Increase the maxWidth to make the modal wider
-          width: "90%", // Set the width to 90% of the viewport width
+          maxWidth: "95%",
+          width: "90%",
           maxHeight: "95%",
           borderRadius: 2,
           overflow: "auto",
@@ -53,29 +53,13 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
           }}
         >
           <Typography variant="h6">Movie Details</Typography>
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{ color: "#fff" }}
-          >
+          <IconButton aria-label="close" onClick={onClose} sx={{ color: "#fff" }}>
             <CloseIcon />
           </IconButton>
         </Box>
+
         <Box sx={{ padding: "16px" }}>
-          {movie.posterUrl && (
-            <CardMedia
-              component="img"
-              image={movie.posterUrl}
-              alt={movie.name}
-              sx={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                mb: 2,
-                borderRadius: 1,
-              }}
-            />
-          )}
+          {/* Name and Rating */}
           <Typography
             variant="h4"
             component="h2"
@@ -84,36 +68,53 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
           >
             {movie.name}
           </Typography>
-
           <MovieRatings movieName={movie.name} />
 
           <Divider sx={{ my: 2, borderColor: "#444" }} />
+
+          {/* Keywords */}
           <Typography variant="subtitle1" gutterBottom>
             Keywords:
           </Typography>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-            {movie.meta.keywords && movie.meta.keywords.length > 0
-              ? movie.meta.keywords.map((keyword, index) => (
-                  <Chip
-                    key={index}
-                    label={keyword}
-                    sx={{
-                      backgroundColor: "#333",
-                      color: "#fff",
-                    }}
-                  />
-                ))
-              : "No Keywords Found"}
+            {movie.meta.keywords?.length ? (
+              movie.meta.keywords.map((keyword, index) => (
+                <Chip
+                  key={index}
+                  label={keyword}
+                  sx={{ backgroundColor: "#333", color: "#fff" }}
+                />
+              ))
+            ) : (
+              "No Keywords Found"
+            )}
           </Box>
 
           <Divider sx={{ my: 2, borderColor: "#444" }} />
+
+          {/* Runtime and Details */}
+          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+            Release Date: {formatDate(movie.releaseDate)}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+            Runtime: {formatRuntime(movie.runtime)}
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
+            Genres: {movie.genres.join(", ")}
+          </Typography>
+
+          <Divider sx={{ my: 2, borderColor: "#444" }} />
+
+          {/* Overview */}
           <Typography variant="subtitle1" gutterBottom>
             Overview:
           </Typography>
           <Typography variant="body1" gutterBottom sx={{ color: "#a0a0a0" }}>
             {movie.overview}
           </Typography>
-          {movie.trailers && movie.trailers.length > 0 && (
+
+          {/* Trailers */}
+          {movie.trailers?.length > 0 && (
             <>
               <Divider sx={{ my: 2, borderColor: "#444" }} />
               <Typography variant="h6" gutterBottom>
@@ -151,16 +152,24 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
             </>
           )}
 
-          <Divider sx={{ my: 2, borderColor: "#444" }} />
-          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-            Release Date: {formatDate(movie.releaseDate)}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-            Runtime: {formatRuntime(movie.runtime)}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-            Genres: {movie.genres.join(", ")}
-          </Typography>
+          {/* Poster at the end */}
+          {movie.posterUrl && (
+            <>
+              <Divider sx={{ my: 2, borderColor: "#444" }} />
+              <CardMedia
+                component="img"
+                image={movie.posterUrl}
+                alt={movie.name}
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  mb: 2,
+                  borderRadius: 1,
+                }}
+              />
+            </>
+          )}
         </Box>
       </Box>
     </Modal>
