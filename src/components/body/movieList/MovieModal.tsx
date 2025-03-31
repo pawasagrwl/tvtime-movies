@@ -114,43 +114,44 @@ const MovieModal: React.FC<MovieModalProps> = ({ open, onClose, movie }) => {
           </Typography>
 
           {/* Trailers */}
-          {movie.trailers?.length > 0 && (
-            <>
-              <Divider sx={{ my: 2, borderColor: "#444" }} />
-              <Typography variant="h6" gutterBottom>
-                Trailers
-              </Typography>
-              {movie.trailers.map((trailer, index) => (
-                <Box
-                  key={index}
-                  sx={{ display: "flex", flexDirection: "column", my: 1 }}
-                >
-                  <CardMedia
-                    component="img"
-                    image={trailer.thumb_url}
-                    alt={trailer.name}
-                    sx={{
-                      width: "100%",
-                      height: "auto",
-                      objectFit: "cover",
-                      borderRadius: 1,
-                      mb: 1,
-                    }}
-                  />
-                  <Typography
-                    variant="subtitle1"
-                    component="a"
-                    href={trailer.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{ color: "#FFA500" }}
-                  >
-                    {trailer.name}
-                  </Typography>
-                </Box>
-              ))}
-            </>
-          )}
+          {Array.isArray(movie.trailers) && movie.trailers.length > 0 && (
+  <>
+    <Divider sx={{ my: 2, borderColor: "#444" }} />
+    <Typography variant="h6" gutterBottom>
+      Trailers
+    </Typography>
+    {movie.trailers.map((trailer, index) => (
+      <Box
+        key={index}
+        sx={{ display: "flex", flexDirection: "column", my: 1 }}
+      >
+        <CardMedia
+          component="img"
+          image={trailer.thumb_url}
+          alt={trailer.name}
+          sx={{
+            width: "100%",
+            height: "auto",
+            objectFit: "cover",
+            borderRadius: 1,
+            mb: 1,
+          }}
+        />
+        <Typography
+          variant="subtitle1"
+          component="a"
+          href={trailer.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{ color: "#FFA500" }}
+        >
+          {trailer.name}
+        </Typography>
+      </Box>
+    ))}
+  </>
+)}
+
 
           {/* Poster at the end */}
           {movie.posterUrl && (
